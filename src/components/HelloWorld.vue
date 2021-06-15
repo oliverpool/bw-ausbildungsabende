@@ -10,19 +10,29 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, defineProps } from 'vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+import { computed } from 'vue'
 
 import { useStore, Mutation } from '@/store/index'
 
-const store = useStore()
-const appVersion = store.state.version // not reactive!
-const count = computed(() => store.state.count)
-const props = defineProps<{
-  msg: string
-}>()
+export default defineComponent({
+  props: ['msg'],
+  setup() {
+    const store = useStore()
+    const appVersion = store.state.version // not reactive!
+    const count = computed(() => store.state.count)
 
-function increment() {
-  store.commit(Mutation.INCREMENT, 1)
-}
+    function increment() {
+      store.commit(Mutation.INCREMENT, 1)
+    }
+
+    return {
+      increment,
+      count,
+      appVersion,
+    }
+  },
+})
 </script>
