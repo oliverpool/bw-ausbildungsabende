@@ -9,7 +9,8 @@
     "test:ci": "cypress run --headless"
   },
   "dependencies": {
-    "vue": "^3.1"
+    "vue": "^3.1",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.2",
