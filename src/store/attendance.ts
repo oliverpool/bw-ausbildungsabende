@@ -35,7 +35,7 @@ class AttendanceStore extends Store<Attendance> {
     return training
   }
   get latestTrainings(): ComputedRef<TrainingEntity[]> {
-    return computed(() => this.$state.trainings.slice(-5).reverse())
+    return computed(() => this.$state.trainings.slice(0).reverse())
   }
   getTraining(id: number): TrainingEntity | undefined {
     return this.$state.trainings.find((t) => t.id == id)
@@ -45,6 +45,17 @@ class AttendanceStore extends Store<Attendance> {
     this.$state.persons.push(person)
     this.save()
     return person
+  }
+  get sortedPersons(): ComputedRef<PersonEntity[]> {
+    return computed(() =>
+      [...this.$state.persons].sort((a, b) => {
+        const firstname = a.firstname.localeCompare(b.firstname, 'de-de')
+        if (firstname != 0) {
+          return firstname
+        }
+        return a.lastname.localeCompare(b.lastname, 'de-de')
+      })
+    )
   }
 }
 

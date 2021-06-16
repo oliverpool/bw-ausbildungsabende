@@ -19,9 +19,7 @@
         >Anwesenheit</router-link
       >
     </div>
-    <div class="rounded bg-gray-100">
-      <router-view :training="training" :id="id" />
-    </div>
+    <router-view :id="id" />
   </div>
 </template>
 <script lang="ts">
