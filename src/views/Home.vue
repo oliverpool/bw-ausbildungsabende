@@ -1,11 +1,6 @@
 <template>
-  <details class="rounded bg-gray-100 mb-3">
-    <summary class="cursor-pointer p-3 hover:bg-blue-100 rounded text-blue-700 font-bold">
-      Neuer Ausbildungsabend
-    </summary>
-    <TrainingCreate class="p-3 pt-0" />
-  </details>
-  <div class="rounded bg-gray-100 p-3">
+  <TrainingCreate class="rounded bg-gray-100 mb-3" />
+  <div class="rounded bg-gray-100 p-3" v-if="latestTrainings.length > 0">
     <h3 class="text-sm">Letzte Ausbildungsabende:</h3>
     <ul>
       <li v-for="training in latestTrainings" :key="training.id">
