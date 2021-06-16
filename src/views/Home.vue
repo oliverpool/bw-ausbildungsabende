@@ -1,23 +1,46 @@
 <template>
-  <details class="rounded bg-gray-100 my-3">
+  <details class="rounded bg-gray-100 mb-3">
     <summary class="cursor-pointer p-3 hover:bg-blue-100 rounded text-blue-700 font-bold">
       Neuer Ausbildungsabend
     </summary>
     <TrainingCreate class="p-3 pt-0" />
   </details>
   <div class="rounded bg-gray-100 p-3">
-    <h3>Letzte Ausbildungsabende:</h3>
-    TODO
+    <h3 class="text-sm">Letzte Ausbildungsabende:</h3>
+    <ul>
+      <li v-for="training in latestTrainings" :key="training.id">
+        <router-link
+          :to="{ name: 'training.show', params: { id: training.id } }"
+          class="py-3 block hover:underline"
+        >
+          <span
+            class="text-gray-700"
+            :class="{
+              'text-blue-700 font-bold': training.date === today,
+            }"
+            >{{ training.date }}</span
+          >
+          &nbsp;<span class="text-lg">{{ training.topic }}</span>
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
 import TrainingCreate from '../components/TrainingCreate.vue'
 
+import { attendanceStore } from '@/store/attendance'
+
 export default defineComponent({
   components: {
     TrainingCreate,
   },
-  setup() {},
+  setup() {
+    return {
+      today: new Date().toISOString().substr(0, 10),
+      latestTrainings: attendanceStore.latestTrainings,
+    }
+  },
 })
 </script>
