@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit" class="px-3 pb-2">
     <label class="block pb-4">
-      <small :class="isExpanded ? 'text-gray-700' : 'text-transparent'">Thema</small>
+      <small :class="isExpanded ? 'text-gray-700' : 'invisible'">Thema</small>
       <input
         class="block w-64"
         :class="isExpanded ? '' : 'border-transparent bg-gray-100 font-bold placeholder-blue-700'"

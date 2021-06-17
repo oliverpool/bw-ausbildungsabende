@@ -18,7 +18,10 @@
           &nbsp;<span class="text-lg">{{ person.firstname }} {{ person.lastname }}</span>
         </div>
       </li>
-      <li class="px-3 py-2">{{ personTraining.length }}</li>
+      <li class="px-3 py-2">
+        {{ personTraining.length }}
+        <small class="text-gray-700">/ {{ persons.length }}</small>
+      </li>
     </ul>
   </div>
   <PersonCreate class="rounded bg-gray-100 mt-3" :training-id="id" />
