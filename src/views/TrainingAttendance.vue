@@ -24,7 +24,7 @@
       </li>
     </ul>
   </div>
-  <PersonCreate class="rounded bg-gray-100 mt-3" :training-id="id" />
+  <PersonCreate class="rounded bg-gray-100 my-3" :training-id="id" />
 </template>
 <script lang="ts">
 import { defineComponent, toRef } from 'vue'
