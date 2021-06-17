@@ -1,4 +1,4 @@
-import { computed, ComputedRef } from '@vue/runtime-core'
+import { computed, ComputedRef, Ref } from '@vue/runtime-core'
 import { Store } from './main'
 
 export interface Attendance {
@@ -56,6 +56,23 @@ class AttendanceStore extends Store<Attendance> {
         return a.lastname.localeCompare(b.lastname, 'de-de')
       })
     )
+  }
+  getPersonTrainingByTraining(id: Ref<number>): ComputedRef<PersonTrainingEntity[]> {
+    return computed(() => this.$state.person_trainings.filter((pt) => pt.training_id == id.value))
+  }
+  createPersonTraining(person: PersonEntity, training_id: number) {
+    this.$state.person_trainings.push({
+      person_id: person.id,
+      type: person.type,
+      training_id,
+    })
+    this.save()
+  }
+  deletePersonTraining(person_id: number, training_id: number) {
+    this.$state.person_trainings = this.$state.person_trainings.filter(
+      (pt) => pt.person_id != person_id || pt.training_id != training_id
+    )
+    this.save()
   }
 }
 

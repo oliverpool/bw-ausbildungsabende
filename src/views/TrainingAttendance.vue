@@ -9,28 +9,42 @@
               'text-blue-700': person.type === 'AEK',
             }"
           >
-            <input type="checkbox" class="mr-2" />{{ person.type }}
+            <PersonTrainingCheckbox
+              :is-checked="isChecked(person.id)"
+              :training-id="id"
+              :person="person"
+            />{{ person.type }}
           </label>
           &nbsp;<span class="text-lg">{{ person.firstname }} {{ person.lastname }}</span>
         </div>
       </li>
-      <li class="px-3 py-2">42</li>
+      <li class="px-3 py-2">{{ personTraining.length }}</li>
     </ul>
   </div>
-  <PersonCreate class="rounded bg-gray-100 mt-3" />
+  <PersonCreate class="rounded bg-gray-100 mt-3" :training-id="id" />
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, toRef } from 'vue'
 import PersonCreate from '../components/PersonCreate.vue'
+import PersonTrainingCheckbox from '../components/PersonTrainingCheckbox.vue'
 import { attendanceStore } from '@/store/attendance'
 
 export default defineComponent({
-  props: ['id'],
-  components: { PersonCreate },
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+  },
+  components: { PersonCreate, PersonTrainingCheckbox },
   setup(props) {
+    const personTraining = attendanceStore.getPersonTrainingByTraining(toRef(props, 'id'))
     return {
-      props,
+      personTraining,
       persons: attendanceStore.sortedPersons,
+      isChecked(id: number) {
+        return !!personTraining.value.find((pt) => pt.person_id === id)
+      },
     }
   },
 })

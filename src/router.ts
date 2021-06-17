@@ -9,7 +9,9 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/ausbildungabend/:id',
     component: Training,
-    props: true,
+    props(route) {
+      return { id: +route.params.id }
+    },
     children: [
       {
         path: '',

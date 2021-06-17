@@ -25,6 +25,10 @@
         </option>
       </select>
     </label>
+    <label v-show="isExpanded && trainingId" class="flex items-center">
+      <input type="checkbox" v-model="values.present" />
+      <span class="text-gray-700 p-2">Anwesend an diesem Ausbildungsabend</span>
+    </label>
     <div v-show="isExpanded" class="pb-3">
       <button
         type="submit"
@@ -40,11 +44,17 @@ import { computed, defineComponent, reactive, ref } from 'vue'
 import { attendanceStore } from '@/store/attendance'
 
 export default defineComponent({
-  setup() {
+  props: {
+    trainingId: {
+      type: Number,
+    },
+  },
+  setup(props) {
     const values = reactive({
       firstname: '',
       lastname: '',
       type: 'AW',
+      present: !!props.trainingId,
     })
 
     const hasFocus = ref(0)
@@ -69,8 +79,16 @@ export default defineComponent({
       hasFocus,
       isExpanded: computed(() => values.firstname || hasFocus.value > 0),
       submit() {
-        const v = { ...values, id: 0 }
-        attendanceStore.createPerson(v)
+        const v = {
+          firstname: values.firstname,
+          lastname: values.lastname,
+          type: values.type,
+          id: 0,
+        }
+        const created = attendanceStore.createPerson(v)
+        if (values.present && props.trainingId) {
+          attendanceStore.createPersonTraining(created, props.trainingId)
+        }
         values.firstname = ''
         values.lastname = ''
         values.type = 'AW'
