@@ -16,10 +16,13 @@
         class="inline-block px-2 border-b-4 hover:border-blue-400"
         :class="[$route.name === 'training.attendance' ? 'border-blue-600' : 'border-gray-200']"
         :to="{ name: 'training.attendance', params: { id } }"
-        >Anwesenheit</router-link
+        >Anwesenheitsliste</router-link
       >
     </div>
     <router-view :id="id" />
+    <div class="py-4">
+      <router-link to="/" class="text-blue-600 p-4 pl-0 hover:underline">← Zurück</router-link>
+    </div>
   </div>
 </template>
 <script lang="ts">

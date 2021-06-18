@@ -28,7 +28,7 @@
         type="submit"
         class="mt-4 bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-full"
       >
-        Ausbildungsabend erstellen
+        Ausbildungsabend erstellen →
       </button>
     </div>
   </form>

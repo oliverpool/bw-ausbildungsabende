@@ -24,14 +24,19 @@ export interface PersonTrainingEntity {
 }
 
 class AttendanceStore extends Store<Attendance> {
-  private save() {
-    const serial = JSON.stringify(this.$state)
-    window.localStorage.setItem('attendance', serial)
+  private saveTrainings() {
+    saveArray('trainings', this.$state.trainings)
+  }
+  private savePersons() {
+    saveArray('persons', this.$state.persons)
+  }
+  private savePersonTrainings() {
+    saveArray('person_trainings', this.$state.person_trainings)
   }
   createTraining(training: TrainingEntity): TrainingEntity {
     training.id = this.$state.trainings.length + 1
     this.$state.trainings.push(training)
-    this.save()
+    this.saveTrainings()
     return training
   }
   get latestTrainings(): ComputedRef<TrainingEntity[]> {
@@ -43,7 +48,7 @@ class AttendanceStore extends Store<Attendance> {
   createPerson(person: PersonEntity): PersonEntity {
     person.id = this.$state.persons.length + 1
     this.$state.persons.push(person)
-    this.save()
+    this.savePersons()
     return person
   }
   get sortedPersons(): ComputedRef<PersonEntity[]> {
@@ -66,25 +71,31 @@ class AttendanceStore extends Store<Attendance> {
       type: person.type,
       training_id,
     })
-    this.save()
+    this.savePersonTrainings()
   }
   deletePersonTraining(person_id: number, training_id: number) {
     this.$state.person_trainings = this.$state.person_trainings.filter(
       (pt) => pt.person_id != person_id || pt.training_id != training_id
     )
-    this.save()
+    this.savePersonTrainings()
   }
+}
+function saveArray(key: string, value: Array<any>) {
+  window.localStorage.setItem('attendance-' + key, JSON.stringify(value))
+}
+function loadArray(key: string) {
+  const saved = window.localStorage.getItem('attendance-' + key)
+  if (!saved) {
+    return []
+  }
+  return JSON.parse(saved)
 }
 
 function initialAttendance(): Attendance {
-  const saved = window.localStorage.getItem('attendance')
-  if (saved) {
-    return JSON.parse(saved)
-  }
   return {
-    trainings: [],
-    persons: [],
-    person_trainings: [],
+    trainings: loadArray('trainings'),
+    persons: loadArray('persons'),
+    person_trainings: loadArray('person_trainings'),
   }
 }
 

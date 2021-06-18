@@ -6,7 +6,7 @@
       <li v-for="training in latestTrainings" :key="training.id">
         <router-link
           :to="{ name: 'training.show', params: { id: training.id } }"
-          class="py-3 block hover:underline"
+          class="py-3 block underline"
         >
           <span
             class="text-gray-700"

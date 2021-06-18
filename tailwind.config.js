@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+// const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   mode: 'jit',
@@ -6,14 +6,13 @@ module.exports = {
     enabled: process.env.NODE_ENV === 'production',
     content: ['./index.html', './src/**/*.{vue,ts}'],
   },
-  // theme: {
-  //   extend: {
-  //     // here's how to extend fonts if needed
-  //     fontFamily: {
-  //       sans: [...defaultTheme.fontFamily.sans],
-  //     },
-  //   },
-  // },
+  theme: {
+    extend: {
+      colors: {
+        'blue-bw': '#0088ce',
+      },
+    },
+  },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/line-clamp'),
