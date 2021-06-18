@@ -24,6 +24,11 @@ export interface PersonTrainingEntity {
 }
 
 class AttendanceStore extends Store<Attendance> {
+  private saveAll() {
+    this.saveTrainings()
+    this.savePersons()
+    this.savePersonTrainings()
+  }
   private saveTrainings() {
     saveArray('trainings', this.$state.trainings)
   }
@@ -33,11 +38,26 @@ class AttendanceStore extends Store<Attendance> {
   private savePersonTrainings() {
     saveArray('person_trainings', this.$state.person_trainings)
   }
+  exportString() {
+    return JSON.stringify(this.$state)
+  }
+  importObject(state: Attendance) {
+    Object.assign(this.$state, state)
+    this.saveAll()
+  }
   createTraining(training: TrainingEntity): TrainingEntity {
     training.id = this.$state.trainings.length + 1
     this.$state.trainings.push(training)
     this.saveTrainings()
     return training
+  }
+  get counts(): ComputedRef<{ [key: string]: number }> {
+    return computed(() => {
+      return {
+        trainings: this.$state.trainings.length,
+        persons: this.$state.persons.length,
+      }
+    })
   }
   get latestTrainings(): ComputedRef<TrainingEntity[]> {
     return computed(() => this.$state.trainings.slice(0).reverse())

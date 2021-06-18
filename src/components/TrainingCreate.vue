@@ -6,7 +6,7 @@
         class="block w-64"
         :class="isExpanded ? '' : 'border-transparent bg-gray-100 font-bold placeholder-blue-700'"
         type="text"
-        v-model="values.topic"
+        v-model.trim="values.topic"
         required
         :placeholder="isExpanded ? '' : 'Neuer Ausbildungsabend'"
         @focus="hasFocus = 1"
@@ -18,7 +18,8 @@
       <input
         class="block w-64"
         type="date"
-        v-model="values.date"
+        v-model.trim="values.date"
+        placeholder="JJJJ-MM-TT"
         required
         :disabled="!values.topic"
       />

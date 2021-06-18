@@ -1,6 +1,6 @@
 <template>
   <TrainingCreate class="rounded bg-gray-100 mb-3" />
-  <div class="rounded bg-gray-100 p-3" v-if="latestTrainings.length > 0">
+  <div class="rounded bg-gray-100 p-3 mb-3" v-if="latestTrainings.length > 0">
     <h3 class="text-sm">Letzte Ausbildungsabende:</h3>
     <ul>
       <li v-for="training in latestTrainings" :key="training.id">
@@ -20,16 +20,19 @@
       </li>
     </ul>
   </div>
+  <div class="rounded bg-gray-100 p-3 mb-3s"><ImportExport /></div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
 import TrainingCreate from '../components/TrainingCreate.vue'
+import ImportExport from '../components/ImportExport.vue'
 
 import { attendanceStore } from '@/store/attendance'
 
 export default defineComponent({
   components: {
     TrainingCreate,
+    ImportExport,
   },
   setup() {
     return {

@@ -3,7 +3,7 @@
     <router-link to="/" class="block p-3 pb-0 text-white bg-blue-bw text-center font-bold"
       >Ausbildungsabende - Bergwacht Bad Tölz</router-link
     >
-    <div class="bg-bergkette h-12 bg-center" />
+    <div class="bg-bergkette h-12 bg-center -mt-px" />
     <div class="container mx-auto p-2">
       <router-view />
     </div>
