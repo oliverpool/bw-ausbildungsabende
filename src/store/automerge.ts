@@ -49,6 +49,9 @@ class AttendanceStore {
 
     idbGet('automerge')
       .then((data) => {
+        if (!data) {
+          return
+        }
         this.importAndMerge(data)
       })
       .catch((err) => {
