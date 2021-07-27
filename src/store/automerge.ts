@@ -10,7 +10,8 @@ import {
   TableRow,
   BinaryDocument,
 } from 'automerge'
-import { ref } from 'vue'
+import { readonly, ref } from 'vue'
+import { get as idbGet, set as idbSet } from 'idb-keyval'
 
 export interface Attendance {
   trainings: Table<TrainingEntity>
@@ -35,6 +36,9 @@ export interface PersonTrainingEntity {
 class AttendanceStore {
   private $doc: FreezeObject<Attendance>
   private $version = ref(1)
+  private $saveErr = ref(null)
+  private $savedVersion = ref(0)
+  private $savedSize = ref(0)
 
   constructor() {
     this.$doc = automergeChange(automergeInit<Attendance>(), (doc) => {
@@ -42,18 +46,36 @@ class AttendanceStore {
       doc.persons = new Table()
       doc.person_trainings = new Table()
     })
+
+    idbGet('automerge')
+      .then((data) => {
+        this.importAndMerge(data)
+      })
+      .catch((err) => {
+        this.$saveErr.value = err
+      })
   }
 
-  private saveAll() {
-    throw new Error('TODO')
+  private async save() {
+    try {
+      this.$saveErr.value = null
+      const version = this.$version.value
+      const data = this.export()
+      await idbSet('automerge', data)
+      this.$savedVersion.value = version
+      this.$savedSize.value = data.byteLength
+    } catch (err) {
+      this.$saveErr.value = err
+    }
   }
+
   private update<T>(cb: (doc: Attendance) => T): T {
     let v: T | undefined
     this.$doc = automergeChange(this.$doc, (doc) => {
       v = cb(doc)
     })
-    //this.save()
     this.$version.value++
+    this.save()
     return v as T
   }
   export(): Uint8Array {
@@ -66,13 +88,8 @@ class AttendanceStore {
     } else {
       this.$doc = automergeMerge(this.$doc, imported)
     }
-
     this.$version.value++
-  }
-  importObject(state: Attendance) {
-    throw new Error('TODO')
-    Object.assign(this.$doc, state)
-    this.saveAll()
+    this.save()
   }
   createTraining(training: TrainingEntity): string {
     const id = this.update((doc) => {
@@ -142,6 +159,18 @@ class AttendanceStore {
         doc.person_trainings.remove(id)
       })
     })
+  }
+  get savedVersion(): Ref<number> {
+    return readonly(this.$savedVersion)
+  }
+  get savedSize(): Ref<number> {
+    return readonly(this.$savedSize)
+  }
+  get currentVersion(): Ref<number> {
+    return readonly(this.$version)
+  }
+  get saveErr(): Ref<any> {
+    return readonly(this.$saveErr)
   }
 }
 

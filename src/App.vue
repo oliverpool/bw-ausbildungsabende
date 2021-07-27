@@ -8,12 +8,36 @@
       <router-view />
     </div>
   </div>
+  <div class="text-center text-xs text-gray-600">
+    <div v-if="saveErr" class="text-red-600 text-sm">{{ saveErr }}</div>
+    <div v-if="currentVersion > 1">
+      <span v-if="savedVersion === currentVersion"
+        >{{ Math.round(savedSize / 1024) }} KB gespeichert ✓</span
+      >
+      <span v-else
+        >{{ currentVersion - savedVersion }} Änderung{{
+          currentVersion == savedVersion + 1 ? '' : 'en'
+        }}
+        noch nicht gespeichert</span
+      >
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-export default defineComponent({})
+import { attendanceStore } from '@/store/automerge'
+export default defineComponent({
+  setup() {
+    return {
+      savedVersion: attendanceStore.savedVersion,
+      savedSize: attendanceStore.savedSize,
+      currentVersion: attendanceStore.currentVersion,
+      saveErr: attendanceStore.saveErr,
+    }
+  },
+})
 </script>
 
 <style>
