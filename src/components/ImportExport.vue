@@ -20,6 +20,11 @@
         Backup-Datei speichern unter&hellip;
       </button>
     </label>
+    <div class="block mt-6 text-right">
+      <button class="text-sm pb-1 hover:underline text-gray-500" @click="promptClean">
+        Datei löschen&hellip;
+      </button>
+    </div>
   </details>
 </template>
 <script lang="ts">
@@ -41,6 +46,12 @@ export default defineComponent({
     const imported: Ref<boolean> = ref(false)
     const importErr: Ref<string | null> = ref(null)
     const details: Ref<HTMLDetailsElement | null> = ref(null) //from the DOM
+
+    const closeDetails = () => {
+      if (details.value) {
+        details.value.removeAttribute('open')
+      }
+    }
     return {
       details,
       imported,
@@ -66,14 +77,19 @@ export default defineComponent({
           try {
             attendanceStore.importAndMerge(new Uint8Array(reader.result as ArrayBuffer))
             imported.value = true
-            if (details.value) {
-              details.value.removeAttribute('open')
-            }
+            closeDetails()
           } catch (error) {
             importErr.value = error
           }
         }
         reader.readAsArrayBuffer(file)
+      },
+      promptClean() {
+        if (!confirm('Alle Daten unwiderruflich löschen?')) {
+          return
+        }
+        attendanceStore.clean()
+        closeDetails()
       },
     }
   },
