@@ -46,12 +46,12 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
-import { attendanceStore } from '@/store/attendance'
+import { attendanceStore } from '@/store/automerge'
 
 export default defineComponent({
   props: {
     trainingId: {
-      type: Number,
+      type: String,
     },
   },
   setup(props) {
@@ -96,11 +96,10 @@ export default defineComponent({
           firstname: values.firstname,
           lastname: values.lastname,
           type: values.type,
-          id: 0,
         }
-        const created = attendanceStore.createPerson(v)
+        const createdId = attendanceStore.createPerson(v)
         if (values.present && props.trainingId) {
-          attendanceStore.createPersonTraining(created, props.trainingId)
+          attendanceStore.createPersonTraining(createdId, v.type, props.trainingId)
         }
         values.firstname = ''
         values.lastname = ''

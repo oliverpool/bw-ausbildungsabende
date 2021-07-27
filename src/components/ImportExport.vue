@@ -1,31 +1,16 @@
 <template>
   <details ref="details">
-    <summary class="text-gray-500">Backup-Datei erstellen/importieren</summary>
+    <summary class="text-gray-500">
+      <span class="inline-block mr-4">Backup-Datei erstellen/importieren</span>
+      <span v-if="imported" class="inline-block- font-bold text-green-700"
+        >Erfolgreich importiert!</span
+      >
+    </summary>
     <label class="block mt-3">
       <h3 class="text-sm pb-1">Backup-Datei importieren:</h3>
-      <input type="file" class="block w-full" accept="application/json" @change="promptImport" />
+      <input type="file" class="block w-full" accept=".automerge" @change="promptImport" />
     </label>
     <p v-if="importErr" v-text="importErr" class="text-red-600 font-bold" />
-    <div v-if="importable">
-      <p class="py-2 font-bold">
-        Willst du wirklich diese Backup-Datei importieren? ({{
-          importable.trainings.length
-        }}
-        Abende, {{ importable.persons.length }} Einsatzkräfte)
-      </p>
-      <p class="text-red-600">
-        Alle Ausbildungsabende und Einsatzkräfte werden von der aktuelle Session gelöscht! ({{
-          currentCounts.trainings
-        }}
-        Abende, {{ currentCounts.persons }} Einsatzkräfte)
-      </p>
-      <button
-        @click="importBackup"
-        class="mt-4 bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-full"
-      >
-        Backup-Datei importieren
-      </button>
-    </div>
     <label class="block mt-6">
       <h3 class="text-sm pb-1">Backup-Datei erstellen:</h3>
       <button
@@ -38,12 +23,12 @@
   </details>
 </template>
 <script lang="ts">
-import { computed, defineComponent, Ref, ref } from 'vue'
+import { defineComponent, Ref, ref } from 'vue'
 
-import { Attendance, attendanceStore } from '@/store/attendance'
+import { attendanceStore } from '@/store/automerge'
 
 // adapted from https://stackoverflow.com/a/34156339/3207406
-function downloadFile(content: string, fileName: string, contentType: string) {
+function downloadFile(content: Uint8Array, fileName: string, contentType: string) {
   var a = document.createElement('a')
   var file = new Blob([content], { type: contentType })
   a.href = URL.createObjectURL(file)
@@ -53,58 +38,42 @@ function downloadFile(content: string, fileName: string, contentType: string) {
 
 export default defineComponent({
   setup() {
-    const importable: Ref<Attendance | null> = ref(null)
+    const imported: Ref<boolean> = ref(false)
     const importErr: Ref<string | null> = ref(null)
-    const details = ref(null) //from the DOM
+    const details: Ref<HTMLDetailsElement | null> = ref(null) //from the DOM
     return {
       details,
-      importable,
+      imported,
       importErr,
       currentCounts: attendanceStore.counts,
       saveBackup() {
-        const txt = attendanceStore.exportString()
-        const filename = 'Ausbildungsabende-' + new Date().toISOString().substr(0, 10) + '.json'
-        downloadFile(txt, filename, 'application/json')
+        const txt = attendanceStore.export()
+        const filename =
+          'Ausbildungsabende-' + new Date().toISOString().substr(0, 10) + '.automerge'
+        downloadFile(txt, filename, 'application/octet-stream')
       },
-      importBackup() {
-        if (!importable.value) {
-          return
-        }
-        attendanceStore.importObject(importable.value)
-        importable.value = null
-        details.value.removeAttribute('open')
-      },
-      promptImport(e) {
-        importable.value = null
+      promptImport(e: Event) {
+        imported.value = false
         importErr.value = null
-
-        const file = e.target && e.target.files && e.target.files.length && e.target.files[0]
+        const target = e.target as HTMLInputElement
+        const file = target && target.files && target.files.length && target.files[0]
         if (!file) {
           return
         }
         var reader = new FileReader()
         reader.onload = function () {
-          e.target.value = ''
-          let parsed
+          target.value = ''
           try {
-            parsed = JSON.parse(reader.result)
+            attendanceStore.importAndMerge(new Uint8Array(reader.result as ArrayBuffer))
+            imported.value = true
+            if (details.value) {
+              details.value.removeAttribute('open')
+            }
           } catch (error) {
             importErr.value = error
-            return
           }
-          const missing = []
-          for (const m of ['trainings', 'persons', 'person_trainings']) {
-            if (!parsed[m]) {
-              missing.push(m)
-            }
-          }
-          if (missing.length) {
-            importErr.value = 'Wichtige Felder fehlen von der Backup-Datei: ' + missing.join(', ')
-            return
-          }
-          importable.value = parsed
         }
-        reader.readAsText(file)
+        reader.readAsArrayBuffer(file)
       },
     }
   },

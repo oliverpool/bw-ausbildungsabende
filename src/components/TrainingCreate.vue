@@ -36,7 +36,7 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
-import { attendanceStore } from '@/store/attendance'
+import { attendanceStore } from '@/store/automerge'
 import router from '@/router'
 
 export default defineComponent({
@@ -63,10 +63,10 @@ export default defineComponent({
       isExpanded: computed(() => values.topic || hasFocus.value > 0),
       submit() {
         const v = { ...values, id: 0 }
-        const training = attendanceStore.createTraining(v)
+        const trainingId = attendanceStore.createTraining(v)
         values.topic = ''
         values.date = new Date().toISOString().substr(0, 10)
-        router.push({ name: 'training.attendance', params: { id: training.id } })
+        router.push({ name: 'training.attendance', params: { id: trainingId } })
       },
     }
   },

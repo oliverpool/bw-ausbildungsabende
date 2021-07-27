@@ -27,7 +27,7 @@ import { defineComponent } from 'vue'
 import TrainingCreate from '../components/TrainingCreate.vue'
 import ImportExport from '../components/ImportExport.vue'
 
-import { attendanceStore } from '@/store/attendance'
+import { attendanceStore } from '@/store/automerge'
 
 export default defineComponent({
   components: {

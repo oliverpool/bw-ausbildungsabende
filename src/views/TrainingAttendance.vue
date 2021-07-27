@@ -19,7 +19,7 @@
         </div>
       </li>
       <li class="px-3 py-2">
-        {{ personTraining.length }}
+        {{ count }}
         <small class="text-gray-700">/ {{ persons.length }}</small>
       </li>
     </ul>
@@ -27,26 +27,29 @@
   <PersonCreate class="rounded bg-gray-100 my-3" :training-id="id" />
 </template>
 <script lang="ts">
-import { defineComponent, toRef } from 'vue'
+import { computed, defineComponent, toRef } from 'vue'
 import PersonCreate from '../components/PersonCreate.vue'
 import PersonTrainingCheckbox from '../components/PersonTrainingCheckbox.vue'
-import { attendanceStore } from '@/store/attendance'
+import { attendanceStore, PersonTrainingEntity } from '@/store/automerge'
 
 export default defineComponent({
   props: {
     id: {
-      type: Number,
+      type: String,
+      required: true,
+    },
+    attendees: {
+      type: Array as () => Array<PersonTrainingEntity>,
       required: true,
     },
   },
   components: { PersonCreate, PersonTrainingCheckbox },
   setup(props) {
-    const personTraining = attendanceStore.getPersonTrainingByTraining(toRef(props, 'id'))
     return {
-      personTraining,
+      count: computed(() => props.attendees.length),
       persons: attendanceStore.sortedPersons,
-      isChecked(id: number) {
-        return !!personTraining.value.find((pt) => pt.person_id === id)
+      isChecked(id: string) {
+        return !!props.attendees.find((pt) => pt.person_id === id)
       },
     }
   },

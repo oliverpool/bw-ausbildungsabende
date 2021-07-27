@@ -9,8 +9,11 @@ upgrade:
 
 host=pfadfrwqhf-user@ssh.cluster026.hosting.ovh.net
 
-build:
+build: tsc
 	yarn run build
+
+tsc:
+	yarn run tsc
 
 staging: build
 	rsync -avh dist/ $(host):subdomain/dev/bw --delete-after

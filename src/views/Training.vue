@@ -19,24 +19,31 @@
         >Anwesenheitsliste</router-link
       >
     </div>
-    <router-view :id="id" />
+    <router-view :id="id" :attendees="attendees" />
     <div class="py-4">
       <router-link to="/" class="text-blue-600 p-4 pl-0 hover:underline">← Zurück</router-link>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, toRef } from 'vue'
 
-import { attendanceStore } from '@/store/attendance'
+import { attendanceStore } from '@/store/automerge'
 
 export default defineComponent({
-  props: ['id'],
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
   setup(props) {
     const training = computed(() => attendanceStore.getTraining(props.id))
+    const attendees = attendanceStore.getPersonTrainingByTraining(toRef(props, 'id'))
 
     return {
       training,
+      attendees,
     }
   },
 })
