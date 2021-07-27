@@ -41,11 +41,17 @@ class AttendanceStore {
   private $savedSize = ref(0)
 
   constructor() {
-    this.$doc = automergeChange(automergeInit<Attendance>(), (doc) => {
-      doc.trainings = new Table()
-      doc.persons = new Table()
-      doc.person_trainings = new Table()
-    })
+    const emptyDoc: Uint8Array = new Uint8Array([
+      133, 111, 74, 131, 183, 247, 151, 109, 0, 149, 1, 1, 16, 141, 128, 139, 194, 43, 181, 64, 157,
+      154, 92, 3, 37, 128, 182, 81, 40, 1, 99, 210, 110, 94, 159, 127, 17, 163, 224, 167, 97, 242,
+      217, 140, 99, 56, 210, 42, 96, 145, 37, 92, 184, 136, 80, 218, 67, 86, 187, 165, 8, 80, 7, 1,
+      2, 3, 2, 19, 2, 35, 6, 53, 2, 64, 2, 86, 2, 7, 21, 36, 33, 2, 35, 4, 52, 1, 66, 2, 86, 2, 128,
+      1, 2, 127, 0, 127, 1, 127, 3, 127, 167, 144, 129, 136, 6, 127, 0, 127, 0, 127, 7, 125, 16,
+      112, 101, 114, 115, 111, 110, 95, 116, 114, 97, 105, 110, 105, 110, 103, 115, 7, 112, 101,
+      114, 115, 111, 110, 115, 9, 116, 114, 97, 105, 110, 105, 110, 103, 115, 3, 0, 127, 3, 2, 127,
+      3, 3, 6, 3, 0, 3, 0,
+    ])
+    this.$doc = automergeLoad<Attendance>(emptyDoc as BinaryDocument)
 
     idbGet('automerge')
       .then((data) => {
