@@ -59,7 +59,12 @@ class AttendanceStore {
       })
   }
 
-  private async save() {
+  private $timeout: number | undefined
+  private async saveLater() {
+    clearTimeout(this.$timeout)
+    this.$timeout = setTimeout(() => this.saveNow(), 3000)
+  }
+  private async saveNow() {
     try {
       this.$saveErr.value = null
       const version = this.$version.value
@@ -67,6 +72,7 @@ class AttendanceStore {
       await idbSet('automerge', data)
       this.$savedVersion.value = version
       this.$savedSize.value = data.byteLength
+      console.log('saved')
     } catch (err) {
       this.$saveErr.value = err
     }
@@ -78,7 +84,7 @@ class AttendanceStore {
       v = cb(doc)
     })
     this.$version.value++
-    this.save()
+    this.saveLater()
     return v as T
   }
   export(): Uint8Array {
@@ -92,7 +98,7 @@ class AttendanceStore {
       this.$doc = automergeMerge(this.$doc, imported)
     }
     this.$version.value++
-    this.save()
+    this.saveNow()
   }
   createTraining(training: TrainingEntity): string {
     const id = this.update((doc) => {
