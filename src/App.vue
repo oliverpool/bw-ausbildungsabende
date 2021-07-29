@@ -1,6 +1,8 @@
 <template>
   <div class="justify-center flex-1">
-    <router-link to="/" class="block p-3 pb-0 text-white bg-blue-bw text-center font-bold"
+    <router-link
+      to="/"
+      class="block p-3 pb-0 text-white bg-blue-bw text-center font-bold sm:text-xl"
       >Ausbildungsabende - Bergwacht Bad Tölz</router-link
     >
     <div class="bg-bergkette h-12 bg-center -mt-px" />
