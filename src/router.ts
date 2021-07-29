@@ -25,6 +25,7 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 
 export default createRouter({
