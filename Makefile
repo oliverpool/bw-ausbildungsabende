@@ -1,6 +1,9 @@
 node_modules:
 	yarn --frozen-lockfile
 
+install:
+	yarn --frozen-lockfile
+
 dev: node_modules
 	yarn dev
 
