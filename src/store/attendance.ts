@@ -3,22 +3,22 @@ import { Store } from './main'
 
 export interface Attendance {
   trainings: TrainingEntity[]
-  persons: PersonEntity[]
-  person_trainings: PersonTrainingEntity[]
+  attendees: AttendeeEntity[]
+  attendee_trainings: AttendeeTrainingEntity[]
 }
 export interface TrainingEntity {
   id: number
   topic: string
   date: string
 }
-export interface PersonEntity {
+export interface AttendeeEntity {
   id: number
   firstname: string
   lastname: string
   type: string
 }
-export interface PersonTrainingEntity {
-  person_id: number
+export interface AttendeeTrainingEntity {
+  attendee_id: number
   training_id: number
   type: string
 }
@@ -26,17 +26,17 @@ export interface PersonTrainingEntity {
 class AttendanceStore extends Store<Attendance> {
   private saveAll() {
     this.saveTrainings()
-    this.savePersons()
-    this.savePersonTrainings()
+    this.saveAttendees()
+    this.saveAttendeeTrainings()
   }
   private saveTrainings() {
     saveArray('trainings', this.$state.trainings)
   }
-  private savePersons() {
-    saveArray('persons', this.$state.persons)
+  private saveAttendees() {
+    saveArray('attendees', this.$state.attendees)
   }
-  private savePersonTrainings() {
-    saveArray('person_trainings', this.$state.person_trainings)
+  private saveAttendeeTrainings() {
+    saveArray('attendee_trainings', this.$state.attendee_trainings)
   }
   exportString() {
     return JSON.stringify(this.$state)
@@ -55,7 +55,7 @@ class AttendanceStore extends Store<Attendance> {
     return computed(() => {
       return {
         trainings: this.$state.trainings.length,
-        persons: this.$state.persons.length,
+        attendees: this.$state.attendees.length,
       }
     })
   }
@@ -65,15 +65,15 @@ class AttendanceStore extends Store<Attendance> {
   getTraining(id: number): TrainingEntity | undefined {
     return this.$state.trainings.find((t) => t.id == id)
   }
-  createPerson(person: PersonEntity): PersonEntity {
-    person.id = this.$state.persons.length + 1
-    this.$state.persons.push(person)
-    this.savePersons()
-    return person
+  createAttendee(attendee: AttendeeEntity): AttendeeEntity {
+    attendee.id = this.$state.attendees.length + 1
+    this.$state.attendees.push(attendee)
+    this.saveAttendees()
+    return attendee
   }
-  get sortedPersons(): ComputedRef<PersonEntity[]> {
+  get sortedAttendees(): ComputedRef<AttendeeEntity[]> {
     return computed(() =>
-      [...this.$state.persons].sort((a, b) => {
+      [...this.$state.attendees].sort((a, b) => {
         const firstname = a.firstname.localeCompare(b.firstname, 'de-de')
         if (firstname != 0) {
           return firstname
@@ -82,22 +82,22 @@ class AttendanceStore extends Store<Attendance> {
       })
     )
   }
-  getPersonTrainingByTraining(id: Ref<number>): ComputedRef<PersonTrainingEntity[]> {
-    return computed(() => this.$state.person_trainings.filter((pt) => pt.training_id == id.value))
+  getAttendeeTrainingByTraining(id: Ref<number>): ComputedRef<AttendeeTrainingEntity[]> {
+    return computed(() => this.$state.attendee_trainings.filter((pt) => pt.training_id == id.value))
   }
-  createPersonTraining(person: PersonEntity, training_id: number) {
-    this.$state.person_trainings.push({
-      person_id: person.id,
-      type: person.type,
+  createAttendeeTraining(attendee: AttendeeEntity, training_id: number) {
+    this.$state.attendee_trainings.push({
+      attendee_id: attendee.id,
+      type: attendee.type,
       training_id,
     })
-    this.savePersonTrainings()
+    this.saveAttendeeTrainings()
   }
-  deletePersonTraining(person_id: number, training_id: number) {
-    this.$state.person_trainings = this.$state.person_trainings.filter(
-      (pt) => pt.person_id != person_id || pt.training_id != training_id
+  deleteAttendeeTraining(attendee_id: number, training_id: number) {
+    this.$state.attendee_trainings = this.$state.attendee_trainings.filter(
+      (pt) => pt.attendee_id != attendee_id || pt.training_id != training_id
     )
-    this.savePersonTrainings()
+    this.saveAttendeeTrainings()
   }
 }
 function saveArray(key: string, value: Array<any>) {
@@ -114,8 +114,8 @@ function loadArray(key: string) {
 function initialAttendance(): Attendance {
   return {
     trainings: loadArray('trainings'),
-    persons: loadArray('persons'),
-    person_trainings: loadArray('person_trainings'),
+    attendees: loadArray('attendees'),
+    attendee_trainings: loadArray('attendee_trainings'),
   }
 }
 

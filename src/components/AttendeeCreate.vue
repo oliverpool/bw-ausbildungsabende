@@ -62,10 +62,10 @@ export default defineComponent({
       present: !!props.trainingId,
     })
 
-    const persons = attendanceStore.sortedPersons
+    const attendees = attendanceStore.sortedAttendees
     const isDuplicated = computed(
       () =>
-        !!persons.value.find(
+        !!attendees.value.find(
           (p) => p.firstname === values.firstname && p.lastname === values.lastname
         )
     )
@@ -97,9 +97,9 @@ export default defineComponent({
           lastname: values.lastname,
           type: values.type,
         }
-        const createdId = attendanceStore.createPerson(v)
+        const createdId = attendanceStore.createAttendee(v)
         if (values.present && props.trainingId) {
-          attendanceStore.createPersonTraining(createdId, v.type, props.trainingId)
+          attendanceStore.createAttendeeTraining(createdId, v.type, props.trainingId)
         }
         values.firstname = ''
         values.lastname = ''

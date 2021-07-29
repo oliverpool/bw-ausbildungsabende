@@ -1,19 +1,19 @@
 <template>
   <div class="rounded bg-gray-100 p-5">
-    <PersonOverview :persons="attendees" />
+    <AttendeeOverview :attendees="attendees" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { PersonTrainingEntity } from '@/store/automerge'
-import PersonOverview from '@/components/PersonOverview.vue'
+import { AttendeeTrainingEntity } from '@/store/automerge'
+import AttendeeOverview from '@/components/AttendeeOverview.vue'
 
 export default defineComponent({
-  components: { PersonOverview },
+  components: { AttendeeOverview },
   props: {
     attendees: {
-      type: Array as () => Array<PersonTrainingEntity>,
+      type: Array as () => Array<AttendeeTrainingEntity>,
       required: true,
     },
   },

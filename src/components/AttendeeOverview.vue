@@ -15,19 +15,19 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { PersonTrainingEntity } from '@/store/automerge'
+import { AttendeeTrainingEntity } from '@/store/automerge'
 
 export default defineComponent({
   props: {
-    persons: {
-      type: Array as () => Array<PersonTrainingEntity>,
+    attendees: {
+      type: Array as () => Array<AttendeeTrainingEntity>,
       required: true,
     },
   },
   setup(props) {
     const countPerType = computed(() => {
       const count: { [key: string]: number } = {}
-      props.persons.forEach((pt) => {
+      props.attendees.forEach((pt) => {
         if (count[pt.type]) {
           count[pt.type]++
         } else {
@@ -37,7 +37,7 @@ export default defineComponent({
       return count
     })
     return {
-      total: computed(() => props.persons.length),
+      total: computed(() => props.attendees.length),
       countPerType,
     }
   },

@@ -24,9 +24,9 @@
   </div>
   <div class="rounded bg-gray-100 p-3 mb-3">
     <h3 class="text-sm text-gray-700">Einsatzkräfte</h3>
-    <PersonOverview :persons="persons" />
+    <AttendeeOverview :attendees="attendees" />
     <br />
-    <router-link to="/einsatzkraefte" class="text-blue-600 p-4 pl-0 hover:underline">
+    <router-link to="/einsatzkraft" class="text-blue-600 p-4 pl-0 hover:underline">
       Einsatzkräfte verwalten
     </router-link>
   </div>
@@ -39,17 +39,17 @@ import TrainingCreate from '../components/TrainingCreate.vue'
 import ImportExport from '../components/ImportExport.vue'
 
 import { attendanceStore } from '@/store/automerge'
-import PersonOverview from '@/components/PersonOverview.vue'
+import AttendeeOverview from '@/components/AttendeeOverview.vue'
 
 export default defineComponent({
   components: {
     TrainingCreate,
     ImportExport,
-    PersonOverview,
+    AttendeeOverview,
   },
   setup() {
     return {
-      persons: attendanceStore.sortedPersons,
+      attendees: attendanceStore.sortedAttendees,
       today: new Date().toISOString().substr(0, 10),
       latestTrainings: attendanceStore.latestTrainings,
     }

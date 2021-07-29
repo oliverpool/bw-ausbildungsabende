@@ -1,36 +1,40 @@
 <template>
   <div class="rounded bg-gray-100">
     <ul>
-      <li v-for="(person, i) in persons" :key="person.id" :class="{ 'bg-gray-50': i % 3 == 2 }">
+      <li
+        v-for="(attendee, i) in attendees"
+        :key="attendee.id"
+        :class="{ 'bg-gray-50': i % 3 == 2 }"
+      >
         <div class="py-2 inline-flex items-center">
           <label
             class="text-gray-700 inline-flex items-center px-3 cursor-pointer"
             :class="{
-              'text-blue-700': person.type === 'AEK',
+              'text-blue-700': attendee.type === 'AEK',
             }"
           >
-            <PersonTrainingCheckbox
-              :is-checked="isChecked(person.id)"
+            <AttendeeTrainingCheckbox
+              :is-checked="isChecked(attendee.id)"
               :training-id="id"
-              :person="person"
-            />{{ person.type }}
+              :attendee="attendee"
+            />{{ attendee.type }}
           </label>
-          &nbsp;<span class="text-lg">{{ person.firstname }} {{ person.lastname }}</span>
+          &nbsp;<span class="text-lg">{{ attendee.firstname }} {{ attendee.lastname }}</span>
         </div>
       </li>
       <li class="px-3 py-2">
         {{ count }}
-        <small class="text-gray-700">/ {{ persons.length }}</small>
+        <small class="text-gray-700">/ {{ attendees.length }}</small>
       </li>
     </ul>
   </div>
-  <PersonCreate class="rounded bg-gray-100 my-3" :training-id="id" />
+  <AttendeeCreate class="rounded bg-gray-100 my-3" :training-id="id" />
 </template>
 <script lang="ts">
 import { computed, defineComponent, toRef } from 'vue'
-import PersonCreate from '../components/PersonCreate.vue'
-import PersonTrainingCheckbox from '../components/PersonTrainingCheckbox.vue'
-import { attendanceStore, PersonTrainingEntity } from '@/store/automerge'
+import AttendeeCreate from '../components/AttendeeCreate.vue'
+import AttendeeTrainingCheckbox from '../components/AttendeeTrainingCheckbox.vue'
+import { attendanceStore, AttendeeTrainingEntity } from '@/store/automerge'
 
 export default defineComponent({
   props: {
@@ -39,17 +43,17 @@ export default defineComponent({
       required: true,
     },
     attendees: {
-      type: Array as () => Array<PersonTrainingEntity>,
+      type: Array as () => Array<AttendeeTrainingEntity>,
       required: true,
     },
   },
-  components: { PersonCreate, PersonTrainingCheckbox },
+  components: { AttendeeCreate, AttendeeTrainingCheckbox },
   setup(props) {
     return {
       count: computed(() => props.attendees.length),
-      persons: attendanceStore.sortedPersons,
+      attendees: attendanceStore.sortedAttendees,
       isChecked(id: string) {
-        return !!props.attendees.find((pt) => pt.person_id === id)
+        return !!props.attendees.find((pt) => pt.attendee_id === id)
       },
     }
   },

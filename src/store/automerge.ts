@@ -15,32 +15,33 @@ import { get as idbGet, set as idbSet } from 'idb-keyval'
 
 export interface Attendance {
   trainings: Table<TrainingEntity>
-  persons: Table<PersonEntity>
-  person_trainings: Table<PersonTrainingEntity>
+  attendees: Table<AttendeeEntity>
+  attendee_trainings: Table<AttendeeTrainingEntity>
 }
 export interface TrainingEntity {
   topic: string
   date: string
 }
-export interface PersonEntity {
+export interface AttendeeEntity {
   firstname: string
   lastname: string
   type: string
 }
-export interface PersonTrainingEntity {
-  person_id: string
+export interface AttendeeTrainingEntity {
+  attendee_id: string
   training_id: string
   type: string
 }
 
 const emptyDoc: Uint8Array = new Uint8Array([
-  133, 111, 74, 131, 183, 247, 151, 109, 0, 149, 1, 1, 16, 141, 128, 139, 194, 43, 181, 64, 157,
-  154, 92, 3, 37, 128, 182, 81, 40, 1, 99, 210, 110, 94, 159, 127, 17, 163, 224, 167, 97, 242, 217,
-  140, 99, 56, 210, 42, 96, 145, 37, 92, 184, 136, 80, 218, 67, 86, 187, 165, 8, 80, 7, 1, 2, 3, 2,
-  19, 2, 35, 6, 53, 2, 64, 2, 86, 2, 7, 21, 36, 33, 2, 35, 4, 52, 1, 66, 2, 86, 2, 128, 1, 2, 127,
-  0, 127, 1, 127, 3, 127, 167, 144, 129, 136, 6, 127, 0, 127, 0, 127, 7, 125, 16, 112, 101, 114,
-  115, 111, 110, 95, 116, 114, 97, 105, 110, 105, 110, 103, 115, 7, 112, 101, 114, 115, 111, 110,
-  115, 9, 116, 114, 97, 105, 110, 105, 110, 103, 115, 3, 0, 127, 3, 2, 127, 3, 3, 6, 3, 0, 3, 0,
+  133, 111, 74, 131, 171, 234, 108, 91, 0, 153, 1, 1, 16, 225, 50, 44, 228, 223, 60, 73, 58, 191,
+  131, 243, 152, 164, 22, 144, 137, 1, 137, 89, 131, 238, 104, 128, 161, 183, 192, 209, 198, 181,
+  21, 63, 7, 175, 176, 88, 105, 222, 106, 39, 228, 113, 62, 88, 33, 116, 208, 132, 134, 184, 7, 1,
+  2, 3, 2, 19, 2, 35, 6, 53, 2, 64, 2, 86, 2, 7, 21, 40, 33, 2, 35, 4, 52, 1, 66, 2, 86, 2, 128, 1,
+  2, 127, 0, 127, 1, 127, 3, 127, 168, 249, 138, 136, 6, 127, 0, 127, 0, 127, 7, 125, 18, 97, 116,
+  116, 101, 110, 100, 101, 101, 95, 116, 114, 97, 105, 110, 105, 110, 103, 115, 9, 97, 116, 116,
+  101, 110, 100, 101, 101, 115, 9, 116, 114, 97, 105, 110, 105, 110, 103, 115, 3, 0, 127, 3, 2, 127,
+  3, 3, 6, 3, 0, 3, 0,
 ])
 
 class AttendanceStore {
@@ -52,6 +53,12 @@ class AttendanceStore {
 
   constructor() {
     this.$doc = automergeLoad<Attendance>(emptyDoc as BinaryDocument)
+    // this.$doc = automergeChange(automergeInit<Attendance>(), (doc) => {
+    //   doc.trainings = new Table()
+    //   doc.attendees = new Table()
+    //   doc.attendee_trainings = new Table()
+    // })
+    // console.log(this.export().toString())
 
     idbGet('automerge')
       .then((data) => {
@@ -103,7 +110,10 @@ class AttendanceStore {
   }
   importAndMerge(data: Uint8Array) {
     const imported = automergeLoad<Attendance>(data as BinaryDocument)
-    if (this.$doc.trainings.count == 0 && this.$doc.persons.count == 0) {
+    if (!imported.trainings || !imported.attendees) {
+      return
+    }
+    if (this.$doc.trainings.count == 0 && this.$doc.attendees.count == 0) {
       this.$doc = imported
     } else {
       this.$doc = automergeMerge(this.$doc, imported)
@@ -125,17 +135,17 @@ class AttendanceStore {
   getTraining(id: string): (TrainingEntity & TableRow) | undefined {
     return (this.$version.value as any) && this.$doc.trainings.byId(id)
   }
-  createPerson(person: PersonEntity): string {
+  createAttendee(attendee: AttendeeEntity): string {
     const id = this.update((doc) => {
-      return doc.persons.add(person)
+      return doc.attendees.add(attendee)
     })
     return id
   }
-  get sortedPersons(): ComputedRef<(PersonEntity & TableRow)[]> {
+  get sortedAttendees(): ComputedRef<(AttendeeEntity & TableRow)[]> {
     return computed(
       () =>
         (this.$version.value as any) &&
-        this.$doc.persons.rows.sort((a, b) => {
+        this.$doc.attendees.rows.sort((a, b) => {
           const firstnameCmp = a.firstname.localeCompare(b.firstname, 'de-de')
           if (firstnameCmp != 0) {
             return firstnameCmp
@@ -144,29 +154,31 @@ class AttendanceStore {
         })
     )
   }
-  getPersonTrainingByTraining(id: Ref<string>): ComputedRef<(PersonTrainingEntity & TableRow)[]> {
+  getAttendeeTrainingByTraining(
+    id: Ref<string>
+  ): ComputedRef<(AttendeeTrainingEntity & TableRow)[]> {
     return computed(
       () =>
         (this.$version.value as any) &&
-        this.$doc.person_trainings.filter((pt) => pt.training_id == id.value)
+        this.$doc.attendee_trainings.filter((pt) => pt.training_id == id.value)
     )
   }
-  createPersonTraining(person_id: string, person_type: string, training_id: string) {
+  createAttendeeTraining(attendee_id: string, attendee_type: string, training_id: string) {
     this.update((doc) => {
-      doc.person_trainings.add({
-        person_id: person_id,
-        type: person_type,
+      doc.attendee_trainings.add({
+        attendee_id: attendee_id,
+        type: attendee_type,
         training_id,
       })
     })
   }
-  deletePersonTraining(person_id: string, training_id: string) {
-    const ids = this.$doc.person_trainings.rows
-      .filter((pt) => pt.person_id == person_id && pt.training_id == training_id)
+  deleteAttendeeTraining(attendee_id: string, training_id: string) {
+    const ids = this.$doc.attendee_trainings.rows
+      .filter((pt) => pt.attendee_id == attendee_id && pt.training_id == training_id)
       .map((pt) => pt.id)
     this.update((doc) => {
       ids.forEach((id: string) => {
-        doc.person_trainings.remove(id)
+        doc.attendee_trainings.remove(id)
       })
     })
   }

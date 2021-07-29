@@ -39,7 +39,7 @@ export default defineComponent({
   },
   setup(props) {
     const training = computed(() => attendanceStore.getTraining(props.id))
-    const attendees = attendanceStore.getPersonTrainingByTraining(toRef(props, 'id'))
+    const attendees = attendanceStore.getAttendeeTrainingByTraining(toRef(props, 'id'))
 
     return {
       training,

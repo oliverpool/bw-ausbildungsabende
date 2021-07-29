@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  { path: '/einsatzkraefte', component: Attendees },
+  { path: '/einsatzkraft', component: Attendees },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 

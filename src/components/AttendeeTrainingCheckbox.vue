@@ -2,7 +2,7 @@
   <input type="checkbox" class="mr-2" v-model="state" :indeterminate="state != isChecked" />
 </template>
 <script lang="ts">
-import { attendanceStore, PersonEntity } from '@/store/automerge'
+import { attendanceStore, AttendeeEntity } from '@/store/automerge'
 import { TableRow } from 'automerge'
 import { defineComponent, ref, watch } from 'vue'
 
@@ -16,8 +16,8 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    person: {
-      type: Object as () => PersonEntity & TableRow,
+    attendee: {
+      type: Object as () => AttendeeEntity & TableRow,
       required: true,
     },
   },
@@ -25,9 +25,13 @@ export default defineComponent({
     const state = ref(props.isChecked)
     watch(state, () => {
       if (state.value) {
-        attendanceStore.createPersonTraining(props.person.id, props.person.type, props.trainingId)
+        attendanceStore.createAttendeeTraining(
+          props.attendee.id,
+          props.attendee.type,
+          props.trainingId
+        )
       } else {
-        attendanceStore.deletePersonTraining(props.person.id, props.trainingId)
+        attendanceStore.deleteAttendeeTraining(props.attendee.id, props.trainingId)
       }
     })
     return { state }
