@@ -25,9 +25,14 @@
   <div class="rounded bg-gray-100 p-3 mb-3">
     <h3 class="text-sm text-gray-700">Einsatzkräfte</h3>
     <PersonOverview :persons="persons" />
+    <br />
+    <router-link to="/einsatzkraefte" class="text-blue-600 p-4 pl-0 hover:underline">
+      Einsatzkräfte verwalten
+    </router-link>
   </div>
   <div class="rounded bg-gray-100 p-3 mb-3"><ImportExport /></div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue'
 import TrainingCreate from '../components/TrainingCreate.vue'
