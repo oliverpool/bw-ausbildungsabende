@@ -1,6 +1,6 @@
 <template>
   <details ref="details">
-    <summary class="text-gray-500">
+    <summary class="text-sm text-gray-700">
       <span class="inline-block mr-4">Backup-Datei erstellen/importieren</span>
       <span v-if="imported" class="inline-block- font-bold text-green-700"
         >Erfolgreich importiert!</span
@@ -56,7 +56,6 @@ export default defineComponent({
       details,
       imported,
       importErr,
-      currentCounts: attendanceStore.counts,
       saveBackup() {
         const txt = attendanceStore.export()
         const filename =
