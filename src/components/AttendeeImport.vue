@@ -55,7 +55,8 @@ import { attendanceStore, AttendeeEntity } from '@/store/automerge'
 import { TableRow, uuid } from 'automerge'
 
 export default defineComponent({
-  setup() {
+  emits: ['imported'],
+  setup(props, { emit }) {
     const values = reactive({
       csv: '',
       lineSeparator: '\n',
@@ -134,7 +135,7 @@ export default defineComponent({
         }
         attendanceStore.importAttendees(partitionedLines.value.new, partitionedLines.value.updated)
         values.csv = ''
-        alert('Erledigt')
+        emit('imported')
       },
     }
   },

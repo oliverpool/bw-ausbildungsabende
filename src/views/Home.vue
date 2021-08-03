@@ -22,36 +22,58 @@
       </li>
     </ul>
   </div>
-  <div class="rounded bg-gray-100 p-3 mb-3">
-    <h3 class="text-sm text-gray-700">Einsatzkräfte</h3>
-    <AttendeeTableTotal :attendees="attendees" />
-    <br />
-    <router-link to="/einsatzkraft" class="text-blue-600 p-4 pl-0 hover:underline">
-      Einsatzkräfte verwalten
-    </router-link>
+  <div class="rounded bg-gray-100 mb-3 sm:flex">
+    <div class="p-3">
+      <h3 class="text-sm text-gray-700">Einsatzkräfte</h3>
+      <AttendeeTableTotal :attendees="attendees" />
+      <!-- <br />
+      <router-link to="/einsatzkraft" class="text-blue-600 p-4 pl-0 hover:underline">
+        Einsatzkräfte verwalten
+      </router-link> -->
+    </div>
+
+    <details ref="attendanceDetails" class="flex-auto">
+      <summary class="text-sm text-gray-700 p-3">
+        <span class="inline-block mr-4">Einsatzkraft-Datei importieren</span>
+      </summary>
+      <div class="p-3">
+        <AttendeeImport @imported="foldAttendanceDetails" />
+      </div>
+    </details>
   </div>
-  <div class="rounded bg-gray-100 p-3 mb-3"><ImportExport /></div>
+  <div class="rounded bg-gray-100 mb-3"><ImportExport /></div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick, ref, Ref } from 'vue'
 import TrainingCreate from '../components/TrainingCreate.vue'
 import ImportExport from '../components/ImportExport.vue'
 
 import { attendanceStore } from '@/store/automerge'
 import AttendeeTableTotal from '@/components/AttendeeTableTotal.vue'
+import AttendeeImport from '@/components/AttendeeImport.vue'
 
 export default defineComponent({
   components: {
     TrainingCreate,
     ImportExport,
     AttendeeTableTotal,
+    AttendeeImport,
   },
   setup() {
+    const attendanceDetails: Ref<HTMLDetailsElement | null> = ref(null) //from the DOM
+
     return {
       attendees: attendanceStore.sortedAttendees,
       today: new Date().toISOString().substr(0, 10),
       latestTrainings: attendanceStore.latestTrainings,
+      attendanceDetails,
+      foldAttendanceDetails() {
+        if (attendanceDetails.value) {
+          attendanceDetails.value.removeAttribute('open')
+        }
+        nextTick(() => alert('Erfolgreich importiert!'))
+      },
     }
   },
 })
