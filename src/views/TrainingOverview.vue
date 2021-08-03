@@ -6,14 +6,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { AttendeeEntity } from '@/store/automerge'
+import { AttendeeTrainingEntity } from '@/store/automerge'
 import AttendeeOverview from '@/components/AttendeeOverview.vue'
 
 export default defineComponent({
   components: { AttendeeOverview },
   props: {
     attendees: {
-      type: Array as () => Array<AttendeeEntity>,
+      type: Array as () => Array<AttendeeTrainingEntity>,
       required: true,
     },
   },

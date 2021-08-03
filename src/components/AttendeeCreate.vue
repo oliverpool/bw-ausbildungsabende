@@ -62,12 +62,8 @@ export default defineComponent({
       present: !!props.trainingId,
     })
 
-    const attendees = attendanceStore.sortedAttendees
     const isDuplicated = computed(
-      () =>
-        !!attendees.value.find(
-          (p) => p.firstname === values.firstname && p.lastname === values.lastname
-        )
+      () => !!attendanceStore.findAttendee(values.firstname, values.lastname)
     )
 
     const hasFocus = ref(0)

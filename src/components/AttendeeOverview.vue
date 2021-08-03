@@ -15,12 +15,11 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { AttendeeEntity } from '@/store/automerge'
 
 export default defineComponent({
   props: {
     attendees: {
-      type: Array as () => Array<AttendeeEntity>,
+      type: Array as () => Array<{ type: string }>,
       required: true,
     },
   },

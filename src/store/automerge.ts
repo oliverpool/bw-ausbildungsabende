@@ -154,6 +154,26 @@ class AttendanceStore {
         })
     )
   }
+  findAttendee(firstname: string, lastname: string): (AttendeeEntity & TableRow) | undefined {
+    const f = firstname.toLowerCase()
+    const l = lastname.toLowerCase()
+    return this.$doc.attendees.rows.find(
+      (p) => p.firstname.toLowerCase() === f && p.lastname.toLowerCase() === l
+    )
+  }
+  importAttendees(insert: AttendeeEntity[], update: (AttendeeEntity & TableRow)[]) {
+    this.update((doc) => {
+      insert.forEach((i) => {
+        doc.attendees.add(i)
+      })
+      update.forEach((u) => {
+        const a = doc.attendees.byId(u.id)
+        a.firstname = u.firstname
+        a.lastname = u.lastname
+        a.type = u.type
+      })
+    })
+  }
   getAttendeeTrainingByTraining(
     id: Ref<string>
   ): ComputedRef<(AttendeeTrainingEntity & TableRow)[]> {

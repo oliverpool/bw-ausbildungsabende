@@ -1,8 +1,11 @@
 <template>
-  <div class="rounded bg-gray-100">
+  <div class="rounded bg-gray-100 flex">
+    <div class="p-5 hidden sm:block">
+      <AttendeeOverview :attendees="attendees" />
+    </div>
     <ul>
       <li
-        v-for="(attendee, i) in attendees"
+        v-for="(attendee, i) in sortedAttendees"
         :key="attendee.id"
         :class="{ 'bg-gray-50': i % 3 == 2 }"
       >
@@ -19,12 +22,15 @@
               :attendee="attendee"
             />{{ attendee.type }}
           </label>
-          &nbsp;<span class="text-lg">{{ attendee.firstname }} {{ attendee.lastname }}</span>
+          &nbsp;<span class="text-lg"
+            >{{ attendee.firstname }}
+            <span class="text-gray-700">{{ attendee.lastname }}</span></span
+          >
         </div>
       </li>
       <li class="px-3 py-2">
         {{ count }}
-        <small class="text-gray-700">/ {{ attendees.length }}</small>
+        <small class="text-gray-700">/ {{ sortedAttendees.length }}</small>
       </li>
     </ul>
   </div>
@@ -34,6 +40,8 @@
 import { computed, defineComponent, toRef } from 'vue'
 import AttendeeCreate from '../components/AttendeeCreate.vue'
 import AttendeeTrainingCheckbox from '../components/AttendeeTrainingCheckbox.vue'
+import AttendeeOverview from '@/components/AttendeeOverview.vue'
+
 import { attendanceStore, AttendeeTrainingEntity } from '@/store/automerge'
 
 export default defineComponent({
@@ -47,11 +55,11 @@ export default defineComponent({
       required: true,
     },
   },
-  components: { AttendeeCreate, AttendeeTrainingCheckbox },
+  components: { AttendeeCreate, AttendeeTrainingCheckbox, AttendeeOverview },
   setup(props) {
     return {
       count: computed(() => props.attendees.length),
-      attendees: attendanceStore.sortedAttendees,
+      sortedAttendees: attendanceStore.sortedAttendees,
       isChecked(id: string) {
         return !!props.attendees.find((pt) => pt.attendee_id === id)
       },
