@@ -1,16 +1,16 @@
 <template>
   <div class="rounded bg-gray-100 p-5">
-    <AttendeeOverview :attendees="attendees" />
+    <AttendeeTableTotal label="Anwesend" :attendees="attendees" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { AttendeeTrainingEntity } from '@/store/automerge'
-import AttendeeOverview from '@/components/AttendeeOverview.vue'
+import AttendeeTableTotal from '@/components/AttendeeTableTotal.vue'
 
 export default defineComponent({
-  components: { AttendeeOverview },
+  components: { AttendeeTableTotal },
   props: {
     attendees: {
       type: Array as () => Array<AttendeeTrainingEntity>,

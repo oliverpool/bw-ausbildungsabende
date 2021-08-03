@@ -80,7 +80,7 @@ class AttendanceStore {
   private $timeout: number | undefined
   private async saveLater() {
     clearTimeout(this.$timeout)
-    this.$timeout = setTimeout(() => this.saveNow(), 3000)
+    this.$timeout = setTimeout(() => this.saveNow(), 1000)
   }
   private async saveNow() {
     try {

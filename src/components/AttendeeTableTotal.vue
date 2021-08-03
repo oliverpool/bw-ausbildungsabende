@@ -2,7 +2,7 @@
   <table>
     <tbody>
       <tr class="font-bold border-b border-gray-400">
-        <td class="px-2 py-1">Total</td>
+        <td class="px-2 py-1">{{ label }}</td>
         <td class="text-right pr-2" v-text="total" />
       </tr>
       <tr v-for="(count, type) in countPerType" :key="type">
@@ -21,6 +21,10 @@ export default defineComponent({
     attendees: {
       type: Array as () => Array<{ type: string }>,
       required: true,
+    },
+    label: {
+      type: String,
+      default: 'Total',
     },
   },
   setup(props) {
