@@ -26,10 +26,10 @@
     <div class="p-3">
       <h3 class="text-sm text-gray-700">Einsatzkräfte</h3>
       <AttendeeTableTotal :attendees="attendees" />
-      <!-- <br />
-      <router-link to="/einsatzkraft" class="text-blue-600 p-4 pl-0 hover:underline">
-        Einsatzkräfte verwalten
-      </router-link> -->
+      <br />
+      <router-link to="/ehemalige" class="text-blue-600 p-4 pl-0 hover:underline">
+        Ehemalige Einsatzkräfte
+      </router-link>
     </div>
 
     <details ref="attendanceDetails" class="flex-auto">

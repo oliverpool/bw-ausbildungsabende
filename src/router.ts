@@ -3,7 +3,7 @@ import Home from './views/Home.vue'
 import Training from './views/Training.vue'
 import TrainingShow from './views/TrainingOverview.vue'
 import TrainingAttendance from './views/TrainingAttendance.vue'
-import Attendees from './views/Attendees.vue'
+import FormerAttendees from './views/FormerAttendees.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: Home },
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  { path: '/einsatzkraft', component: Attendees },
+  { path: '/ehemalige', component: FormerAttendees },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 

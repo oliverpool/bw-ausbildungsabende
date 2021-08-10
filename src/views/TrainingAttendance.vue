@@ -60,7 +60,9 @@ export default defineComponent({
       }, {} as { [key: string]: string })
     )
     return {
-      sortedAttendees: attendanceStore.getSortedAttendees((a) => !!presentTypes.value[a.id]),
+      sortedAttendees: attendanceStore.getSortedAttendees(
+        (a) => !!presentTypes.value[a.id] || a.type != '×'
+      ),
       presentTypes,
     }
   },
