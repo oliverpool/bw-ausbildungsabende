@@ -9,9 +9,9 @@
         :key="attendee.id"
         :class="{ 'bg-gray-50': i % 3 == 2 }"
       >
-        <div class="py-2 inline-flex items-center">
+        <div class="py-2 flex items-center">
           <label
-            class="text-gray-700 inline-flex items-center cursor-pointer min-w-16"
+            class="pl-2 text-gray-700 inline-flex items-center cursor-pointer min-w-16"
             :class="{
               'text-blue-700': (presentTypes[attendee.id] || attendee.type) === 'AEK',
             }"
@@ -24,11 +24,7 @@
             {{ presentTypes[attendee.id] || attendee.type }}
           </label>
           &nbsp;
-          <AttendeeEditable
-            class="text-lg"
-            :attendee="attendee"
-            :old-type="presentTypes[attendee.id]"
-          />
+          <AttendeeEditable :attendee="attendee" :old-type="presentTypes[attendee.id]" />
         </div>
       </li>
     </ul>

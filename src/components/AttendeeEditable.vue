@@ -1,13 +1,33 @@
 <template>
-  <div v-if="!form.isOpen" @click="open">
+  <div v-if="!form.isOpen" class="text-lg">
     {{ attendee.firstname }}
     <span class="text-gray-700">{{ attendee.lastname }}</span>
     <small class="text-gray-700" v-if="oldType && oldType !== attendee.type">
       (mittlerweile {{ attendee.type }})
     </small>
   </div>
+  <button
+    v-if="!form.isOpen"
+    @click="open"
+    class="flex-auto text-right self-start text-gray-300 pr-2 hover:text-blue-700"
+  >
+    <svg
+      class="w-6 h-6 inline-block"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+      ></path>
+    </svg>
+  </button>
 
-  <form v-else @submit.prevent="submit" class="bg-gray-200 rounded px-3">
+  <form v-if="form.isOpen" @submit.prevent="submit" class="bg-gray-200 rounded px-3">
     <label class="block">
       <small class="text-gray-700">Vorname</small>
       <input class="block w-64" type="text" v-model.trim="form.firstname" required />
