@@ -32,6 +32,17 @@ import { defineComponent } from 'vue'
 import { attendanceStore } from '@/store/automerge'
 export default defineComponent({
   setup() {
+    addEventListener(
+      'beforeunload',
+      (event) => {
+        if (attendanceStore.savedVersion.value == attendanceStore.currentVersion.value) {
+          return
+        }
+        event.preventDefault()
+        return (event.returnValue = 'Are you sure you want to exit?')
+      },
+      { capture: true }
+    )
     return {
       savedVersion: attendanceStore.savedVersion,
       savedSize: attendanceStore.savedSize,
