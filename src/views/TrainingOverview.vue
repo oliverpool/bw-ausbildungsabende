@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded bg-gray-100 p-5">
+  <div class="rounded bg-gray-100 p-3">
     <AttendeeTableTotal label="Anwesend" :attendees="attendees" />
   </div>
 </template>

@@ -11,6 +11,10 @@ module.exports = {
       colors: {
         'blue-bw': '#0088ce',
       },
+      minWidth: (theme) => ({
+        8: theme('width.8'),
+        40: theme('width.40'),
+      }),
     },
   },
   plugins: [

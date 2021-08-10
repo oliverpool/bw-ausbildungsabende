@@ -3,13 +3,13 @@
     <tbody>
       <tr class="font-bold border-b border-gray-400">
         <td class="px-2 py-1">{{ label }}</td>
-        <td class="text-right pr-1" v-text="partial" />
-        <td class="pr-2 text-gray-700 text-sm">/ {{ total }}</td>
+        <td class="text-right pr-1 min-w-8" v-text="partial" />
+        <td class="pr-2 text-gray-700 text-sm whitespace-nowrap">/ {{ total }}</td>
       </tr>
       <tr v-for="(count, type) in countPerType" :key="type">
         <td v-text="type" class="px-2" />
         <td class="text-right pr-1" v-text="presentPerType[type] || 0" />
-        <td class="pr-2 text-gray-700 text-sm">/ {{ count }}</td>
+        <td class="pr-2 text-gray-700 text-sm whitespace-nowrap">/ {{ count }}</td>
       </tr>
     </tbody>
   </table>

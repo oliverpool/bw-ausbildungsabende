@@ -1,6 +1,6 @@
 <template>
   <div class="rounded bg-gray-100 sm:flex">
-    <div class="p-5">
+    <div class="p-3 pr-0 min-w-40">
       <AttendeeTablePartial :attendees="sortedAttendees" :present-types="presentTypes" />
     </div>
     <ul class="flex-auto">
