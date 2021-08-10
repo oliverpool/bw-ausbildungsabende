@@ -19,7 +19,7 @@ tsc:
 	yarn run tsc
 
 staging: build
-	rsync -avh dist/ $(host):subdomain/dev/bw --delete-after
+	rsync -avh dist/ $(host):subdomain/bw/ausbildung --delete-after
 
 tagnow:
 	@git diff-index --quiet HEAD || (echo "git tree is not clean:" && git status --short && exit 1)

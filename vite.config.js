@@ -13,5 +13,5 @@ export default defineConfig({
   define: {
     _APP_VERSION: JSON.stringify(pkg.version),
   },
-  base: '/bw/',
+  base: '/',
 })
