@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submit" class="px-3 pb-2" :class="{ 'bg-red-100': isDuplicated }">
-    <label class="block pb-4">
+    <label class="block" :class="isExpanded ? '' : 'pb-4'">
       <small :class="isExpanded ? 'text-gray-700' : 'invisible'">Vorname</small>
       <input
         class="block w-64"
@@ -47,6 +47,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { attendanceStore } from '@/store/automerge'
+import types from '@/attendee-types'
 
 export default defineComponent({
   props: {
@@ -68,12 +69,7 @@ export default defineComponent({
 
     const hasFocus = ref(0)
     return {
-      types: {
-        AW: 'Anwärter',
-        AEK: 'Atkive Einsatzkraft',
-        JG: 'Jugendgruppe',
-        KB: 'Keine Bereitschaftdienst',
-      },
+      types,
       values,
       blurred() {
         const now = Date.now()

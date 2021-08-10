@@ -13,6 +13,7 @@ module.exports = {
       },
       minWidth: (theme) => ({
         8: theme('width.8'),
+        16: theme('width.16'),
         40: theme('width.40'),
       }),
     },

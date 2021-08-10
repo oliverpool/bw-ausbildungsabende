@@ -53,6 +53,7 @@
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { attendanceStore, AttendeeEntity } from '@/store/automerge'
 import { TableRow, uuid } from 'automerge'
+import types from '@/attendee-types'
 
 export default defineComponent({
   emits: ['imported'],
@@ -118,12 +119,7 @@ export default defineComponent({
     )
 
     return {
-      types: {
-        AW: 'Anwärter',
-        AEK: 'Atkive Einsatzkraft',
-        JG: 'Jugendgruppe',
-        KB: 'Keine Bereitschaftdienst',
-      },
+      types,
       values,
       lines,
       partitionedLines,

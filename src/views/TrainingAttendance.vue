@@ -11,7 +11,7 @@
       >
         <div class="py-2 inline-flex items-center">
           <label
-            class="text-gray-700 inline-flex items-center px-3 cursor-pointer"
+            class="text-gray-700 inline-flex items-center cursor-pointer min-w-16"
             :class="{
               'text-blue-700': (presentTypes[attendee.id] || attendee.type) === 'AEK',
             }"
@@ -23,17 +23,12 @@
             />
             {{ presentTypes[attendee.id] || attendee.type }}
           </label>
-          &nbsp;<span class="text-lg"
-            >{{ attendee.firstname }}
-            <span class="text-gray-700">{{ attendee.lastname }}</span>
-
-            <small
-              class="text-gray-700"
-              v-if="presentTypes[attendee.id] && presentTypes[attendee.id] !== attendee.type"
-            >
-              (mittlerweile {{ attendee.type }})
-            </small>
-          </span>
+          &nbsp;
+          <AttendeeEditable
+            class="text-lg"
+            :attendee="attendee"
+            :old-type="presentTypes[attendee.id]"
+          />
         </div>
       </li>
     </ul>
@@ -42,8 +37,9 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import AttendeeCreate from '../components/AttendeeCreate.vue'
-import AttendeeTrainingCheckbox from '../components/AttendeeTrainingCheckbox.vue'
+import AttendeeCreate from '@/components/AttendeeCreate.vue'
+import AttendeeEditable from '@/components/AttendeeEditable.vue'
+import AttendeeTrainingCheckbox from '@/components/AttendeeTrainingCheckbox.vue'
 import AttendeeTablePartial from '@/components/AttendeeTablePartial.vue'
 
 import { attendanceStore, AttendeeTrainingEntity } from '@/store/automerge'
@@ -59,7 +55,7 @@ export default defineComponent({
       required: true,
     },
   },
-  components: { AttendeeCreate, AttendeeTrainingCheckbox, AttendeeTablePartial },
+  components: { AttendeeCreate, AttendeeEditable, AttendeeTrainingCheckbox, AttendeeTablePartial },
   setup(props) {
     const presentTypes = computed(() =>
       props.attendees.reduce((acc, current) => {

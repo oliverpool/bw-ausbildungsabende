@@ -174,6 +174,14 @@ class AttendanceStore {
       })
     })
   }
+  updateAttendee(id: string, attendee: AttendeeEntity) {
+    this.update((doc) => {
+      const a = doc.attendees.byId(id)
+      a.firstname = attendee.firstname
+      a.lastname = attendee.lastname
+      a.type = attendee.type
+    })
+  }
   getAttendeeTrainingByTraining(
     id: Ref<string>
   ): ComputedRef<(AttendeeTrainingEntity & TableRow)[]> {
