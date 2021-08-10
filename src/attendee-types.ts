@@ -1,6 +1,7 @@
 export default {
   AW: 'Anwärter',
-  AEK: 'Atkive Einsatzkraft',
+  AEK: 'Aktive Einsatzkraft',
   JG: 'Jugendgruppe',
-  KB: 'Keine Bereitschaftdienst',
+  KB: 'Kein Bereitschaftdienst',
+  '×': 'Nicht mehr dabei',
 }

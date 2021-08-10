@@ -141,11 +141,19 @@ class AttendanceStore {
     })
     return id
   }
-  get sortedAttendees(): ComputedRef<(AttendeeEntity & TableRow)[]> {
+  getSortedAttendees(
+    includeAsWell?: (a: AttendeeEntity & TableRow) => boolean
+  ): ComputedRef<(AttendeeEntity & TableRow)[]> {
+    const filter = includeAsWell
+      ? (a: AttendeeEntity & TableRow) => {
+          return includeAsWell(a) || a.type != '×'
+        }
+      : (a: AttendeeEntity & TableRow) => a.type != '×'
+
     return computed(
       () =>
         (this.$version.value as any) &&
-        this.$doc.attendees.rows.sort((a, b) => {
+        this.$doc.attendees.rows.filter(filter).sort((a, b) => {
           const firstnameCmp = a.firstname.localeCompare(b.firstname, 'de-de')
           if (firstnameCmp != 0) {
             return firstnameCmp

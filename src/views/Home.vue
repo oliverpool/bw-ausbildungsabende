@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref, Ref } from 'vue'
+import { computed, defineComponent, nextTick, ref, Ref } from 'vue'
 import TrainingCreate from '../components/TrainingCreate.vue'
 import ImportExport from '../components/ImportExport.vue'
 
@@ -64,7 +64,7 @@ export default defineComponent({
     const attendanceDetails: Ref<HTMLDetailsElement | null> = ref(null) //from the DOM
 
     return {
-      attendees: attendanceStore.sortedAttendees,
+      attendees: attendanceStore.getSortedAttendees(),
       today: new Date().toISOString().substr(0, 10),
       latestTrainings: attendanceStore.latestTrainings,
       attendanceDetails,

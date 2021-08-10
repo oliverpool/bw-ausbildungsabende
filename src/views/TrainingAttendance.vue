@@ -38,7 +38,7 @@ import AttendeeEditable from '@/components/AttendeeEditable.vue'
 import AttendeeTrainingCheckbox from '@/components/AttendeeTrainingCheckbox.vue'
 import AttendeeTablePartial from '@/components/AttendeeTablePartial.vue'
 
-import { attendanceStore, AttendeeTrainingEntity } from '@/store/automerge'
+import { attendanceStore, AttendeeEntity, AttendeeTrainingEntity } from '@/store/automerge'
 
 export default defineComponent({
   props: {
@@ -60,7 +60,7 @@ export default defineComponent({
       }, {} as { [key: string]: string })
     )
     return {
-      sortedAttendees: attendanceStore.sortedAttendees,
+      sortedAttendees: attendanceStore.getSortedAttendees((a) => !!presentTypes.value[a.id]),
       presentTypes,
     }
   },
