@@ -10,6 +10,7 @@
   </div>
   <div class="text-center text-xs bg-white text-gray-600 pb-safe-area-inset">
     <div v-if="saveErr" class="text-red-600 text-sm">{{ saveErr }}</div>
+    <div v-if="needRefresh" class="text-green-600">Neue Version verfügbar</div>
     <div v-if="currentVersion > 1">
       <span v-if="savedVersion === currentVersion"
         >{{ Math.round(savedSize / 1024) }} KB gespeichert ✓</span
@@ -52,7 +53,7 @@ export default defineComponent({
 
     const { needRefresh, updateServiceWorker } = useRegisterSW()
 
-    useRouter().afterEach((to, from) => {
+    useRouter().afterEach(() => {
       if (isDirty.value || !needRefresh.value) {
         return
       }
@@ -66,6 +67,7 @@ export default defineComponent({
       saveErr: attendanceStore.saveErr,
 
       isDirty,
+      needRefresh,
     }
   },
 })
