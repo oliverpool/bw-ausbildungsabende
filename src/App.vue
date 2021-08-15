@@ -8,16 +8,6 @@
       <router-view />
     </div>
   </div>
-  <div class="pb-4 text-center bg-white text-black pl-safe-area-inset pr-safe-area-inset">
-    <button
-      v-if="!isDirty && needRefresh"
-      @click="updateServiceWorker"
-      class="rounded-full bg-blue-bw text-white p-3 px-8 text-sm"
-    >
-      Eine neue Version ist verfügbar.
-      <span class="inline-block">Klicke hier, um die App zu aktualisieren.</span>
-    </button>
-  </div>
   <div class="text-center text-xs bg-white text-gray-600 pb-safe-area-inset">
     <div v-if="saveErr" class="text-red-600 text-sm">{{ saveErr }}</div>
     <div v-if="currentVersion > 1">
@@ -39,6 +29,7 @@ import { computed, defineComponent } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 import { attendanceStore } from '@/store/automerge'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   setup() {
     const isDirty = computed(() => {
@@ -61,6 +52,13 @@ export default defineComponent({
 
     const { needRefresh, updateServiceWorker } = useRegisterSW()
 
+    useRouter().afterEach((to, from) => {
+      if (isDirty.value || !needRefresh.value) {
+        return
+      }
+      updateServiceWorker()
+    })
+
     return {
       savedVersion: attendanceStore.savedVersion,
       savedSize: attendanceStore.savedSize,
@@ -68,8 +66,6 @@ export default defineComponent({
       saveErr: attendanceStore.saveErr,
 
       isDirty,
-      needRefresh,
-      updateServiceWorker: () => updateServiceWorker(),
     }
   },
 })

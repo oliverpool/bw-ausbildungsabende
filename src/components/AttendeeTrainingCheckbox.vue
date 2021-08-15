@@ -4,7 +4,7 @@
 <script lang="ts">
 import { attendanceStore, AttendeeEntity } from '@/store/automerge'
 import { TableRow } from 'automerge'
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, nextTick, ref, watch } from 'vue'
 
 export default defineComponent({
   props: {
@@ -24,6 +24,9 @@ export default defineComponent({
   setup(props) {
     const state = ref(props.isChecked)
     watch(state, () => {
+      if (state.value == props.isChecked) {
+        return
+      }
       if (state.value) {
         attendanceStore.createAttendeeTraining(
           props.attendee.id,
@@ -33,6 +36,14 @@ export default defineComponent({
       } else {
         attendanceStore.deleteAttendeeTraining(props.attendee.id, props.trainingId)
       }
+    })
+    watch(attendanceStore.currentVersion, () => {
+      nextTick(() => {
+        if (state.value == props.isChecked) {
+          return
+        }
+        state.value = props.isChecked
+      })
     })
     return { state }
   },

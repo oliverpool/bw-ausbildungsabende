@@ -2,7 +2,7 @@ import { computed, ComputedRef, Ref } from '@vue/runtime-core'
 import {
   FreezeObject,
   change as automergeChange,
-  init as automergeInit,
+  // init as automergeInit,
   save as automergeSave,
   load as automergeLoad,
   merge as automergeMerge,
@@ -11,7 +11,7 @@ import {
   BinaryDocument,
 } from 'automerge'
 import { readonly, ref } from 'vue'
-import { get as idbGet, set as idbSet } from 'idb-keyval'
+import { get as idbGet, update as idbUpdate } from 'idb-keyval'
 
 export interface Attendance {
   trainings: Table<TrainingEntity>
@@ -85,9 +85,24 @@ class AttendanceStore {
   private async saveNow() {
     try {
       this.$saveErr.value = null
-      const version = this.$version.value
-      const data = this.export()
-      await idbSet('automerge', data)
+      let version = this.$version.value
+      let data = this.export()
+      await idbUpdate('automerge', (old?: Uint8Array) => {
+        if (!old || !old.byteLength || !this.$savedSize.value) {
+          return data
+        }
+        if (old.byteLength == this.$savedSize.value) {
+          return data
+        }
+        // something changed in our back
+        const storedDoc = automergeLoad<Attendance>(old as BinaryDocument)
+        this.$doc = automergeMerge(this.$doc, storedDoc)
+        this.$version.value += 10
+        version += 10
+        data = automergeSave(this.$doc)
+        console.log('merged-back')
+        return data
+      })
       this.$savedVersion.value = version
       this.$savedSize.value = data.byteLength
       console.log('saved')
