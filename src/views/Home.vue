@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, Ref } from 'vue'
+import { defineComponent, nextTick, ref, Ref } from 'vue'
 import TrainingCreate from '../components/TrainingCreate.vue'
 import ImportExport from '../components/ImportExport.vue'
 

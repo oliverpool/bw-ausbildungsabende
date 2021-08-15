@@ -13,14 +13,15 @@
     <div v-if="needRefresh" class="text-green-600">Neue Version verfügbar</div>
     <div v-if="currentVersion > 1">
       <span v-if="savedVersion === currentVersion"
-        >{{ Math.round(savedSize / 1024) }} KB gespeichert ✓</span
-      >
+        >{{ Math.round(savedSize / 1024) }} KB gespeichert ✓
+      </span>
       <span v-else
         >{{ currentVersion - savedVersion }} Änderung{{
           currentVersion == savedVersion + 1 ? '' : 'en'
         }}
-        noch nicht gespeichert</span
-      >
+        noch nicht gespeichert –
+      </span>
+      {{ APP_VERSION }}
     </div>
   </div>
 </template>
@@ -68,6 +69,8 @@ export default defineComponent({
 
       isDirty,
       needRefresh,
+
+      APP_VERSION: _APP_VERSION,
     }
   },
 })
