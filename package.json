@@ -14,7 +14,7 @@
     "idb-keyval": "^5.0.6",
     "vue": "^3.1",
     "vue-router": "4",
-    "vue-tsc": "^0.2.2"
+    "vue-tsc": "^0.2.3"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.2",
