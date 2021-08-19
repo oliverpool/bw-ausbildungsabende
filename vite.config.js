@@ -46,4 +46,7 @@ export default defineConfig({
     _APP_VERSION: JSON.stringify(pkg.version),
   },
   base: '/',
+  build: {
+    cssCodeSplit: false,
+  },
 })
