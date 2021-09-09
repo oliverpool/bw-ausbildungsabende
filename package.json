@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "automerge": "^1.0.1-preview.3",
-    "idb-keyval": "^5.0.6",
+    "idb-keyval": "^6.0.1",
     "vue": "^3.1",
     "vue-router": "4",
     "vue-tsc": "^0.2.2"
