@@ -1,6 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <label class="block pb-4">
+      <small>Vorname, Nachname, Status (AW/AEK/JG/KB)</small>
       <textarea required class="block w-full" rows="10" v-model.trim="values.csv" />
     </label>
     <div class="pb-3">
@@ -61,7 +62,7 @@ export default defineComponent({
     const values = reactive({
       csv: '',
       lineSeparator: '\n',
-      cellSeparator: '\t',
+      cellSeparator: ',',
       indexFirstname: 0,
       indexLastname: 1,
       indexType: 2,
@@ -82,7 +83,6 @@ export default defineComponent({
             firstname: l[values.indexFirstname],
             lastname: l[values.indexLastname],
             type: l[values.indexType],
-            id: uuid(),
           } as AttendeeEntity & TableRow
         })
     })

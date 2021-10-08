@@ -34,9 +34,9 @@
 
     <details ref="attendanceDetails" class="flex-auto">
       <summary class="text-sm text-gray-700 p-3">
-        <span class="inline-block mr-4">Einsatzkraft-Datei importieren</span>
+        <span class="inline-block mr-4">Einsatzkraft-Liste hinzufügen</span>
       </summary>
-      <div class="p-3">
+      <div class="px-3">
         <AttendeeImport @imported="foldAttendanceDetails" />
       </div>
     </details>
