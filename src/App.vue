@@ -4,7 +4,7 @@
   >
   <div class="bg-bergkette bg-white h-12 bg-center -mt-px" />
   <div class="justify-center flex-1 bg-white text-black pl-safe-area-inset pr-safe-area-inset">
-    <div class="container mx-auto p-2">
+    <div class="container mx-auto p-2" v-if="!isUpdating">
       <router-view />
     </div>
   </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 import { attendanceStore } from '@/store/automerge'
@@ -54,14 +54,21 @@ export default defineComponent({
 
     const { needRefresh, updateServiceWorker } = useRegisterSW()
 
+    const isUpdating = ref(false)
     useRouter().afterEach(() => {
       if (isDirty.value || !needRefresh.value) {
         return
       }
+      isUpdating.value = true
+      setTimeout(() => {
+        isUpdating.value = false
+      }, 3000)
       updateServiceWorker()
     })
 
     return {
+      isUpdating,
+
       savedVersion: attendanceStore.savedVersion,
       savedSize: attendanceStore.savedSize,
       currentVersion: attendanceStore.currentVersion,
