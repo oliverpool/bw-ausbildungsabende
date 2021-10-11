@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from './views/Home.vue'
+import Index from './views/Index.vue'
 import Training from './views/Training.vue'
 import TrainingShow from './views/TrainingOverview.vue'
 import TrainingAttendance from './views/TrainingAttendance.vue'
 import FormerAttendees from './views/FormerAttendees.vue'
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: Home },
+  { path: '/', component: Index },
   {
     path: '/ausbildungabend/:id',
     component: Training,
