@@ -1,8 +1,13 @@
 version: 2
 updates:
   # Enable version updates for npm
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "tuesday"
+      interval: 'weekly'
+      day: 'tuesday'
+      time: '08:00'
+      timezone: 'Europe/Berlin'
+    allow:
+      - dependency-type: 'production'
+    open-pull-requests-limit: 1
