@@ -47,7 +47,7 @@ const emptyDoc: Uint8Array = new Uint8Array([
 class AttendanceStore {
   private $doc: FreezeObject<Attendance>
   private $version = ref(1)
-  private $saveErr = ref(null)
+  private $saveErr: Ref<string | null> = ref(null)
   private $savedVersion = ref(0)
   private $savedSize = ref(0)
 
@@ -68,7 +68,7 @@ class AttendanceStore {
         this.importAndMerge(data)
       })
       .catch((err) => {
-        this.$saveErr.value = err
+        this.$saveErr.value = String(err)
       })
   }
   clean() {
@@ -107,7 +107,7 @@ class AttendanceStore {
       this.$savedSize.value = data.byteLength
       console.log('saved')
     } catch (err) {
-      this.$saveErr.value = err
+      this.$saveErr.value = String(err)
     }
   }
 
@@ -238,7 +238,7 @@ class AttendanceStore {
   get currentVersion(): Ref<number> {
     return readonly(this.$version)
   }
-  get saveErr(): Ref<any> {
+  get saveErr(): Ref<string | null> {
     return readonly(this.$saveErr)
   }
 }

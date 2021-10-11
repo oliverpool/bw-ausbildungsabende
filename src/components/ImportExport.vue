@@ -80,7 +80,7 @@ export default defineComponent({
             imported.value = true
             closeDetails()
           } catch (error) {
-            importErr.value = error
+            importErr.value = String(error)
           }
         }
         reader.readAsArrayBuffer(file)
