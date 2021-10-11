@@ -31,7 +31,8 @@
         Ehemalige Einsatzkräfte
       </router-link>
     </div>
-
+  </div>
+  <div class="rounded bg-gray-100 mb-3">
     <details ref="attendanceDetails" class="flex-auto">
       <summary class="text-sm text-gray-700 p-3">
         <span class="inline-block mr-4">Einsatzkraft-Liste hinzufügen</span>
