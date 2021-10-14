@@ -6,7 +6,7 @@
       <li v-for="training in latestTrainings" :key="training.id">
         <router-link
           :to="{ name: 'training.show', params: { id: training.id } }"
-          class="py-3 block underline text-gray-700"
+          class="py-2 block underline text-gray-700"
           :class="{
             'text-blue-700': training.date === today,
           }"
