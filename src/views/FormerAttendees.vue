@@ -16,7 +16,7 @@
     </ul>
   </div>
   <div class="py-4">
-    <router-link to="/" class="text-blue-600 p-4 pl-0 hover:underline">← Zurück</router-link>
+    <router-link to="/anwesenheit" class="text-blue-600 p-4 pl-0 hover:underline">← Zurück</router-link>
   </div>
 </template>
 

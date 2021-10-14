@@ -22,15 +22,14 @@
       </li>
     </ul>
   </div>
-  <div class="rounded bg-gray-100 mb-3 sm:flex">
+  <div class="rounded bg-gray-100 mb-3 flex justify-between">
     <div class="p-3">
       <h3 class="text-sm text-gray-700">Einsatzkräfte</h3>
-      <AttendeeTableTotal :attendees="attendees" />
-      <br />
-      <router-link to="/ehemalige" class="text-blue-600 p-4 pl-0 hover:underline">
-        Ehemalige Einsatzkräfte
+      <router-link to="/anwesenheit" class="text-blue-600 py-2 block hover:underline">
+        Zum Übersicht
       </router-link>
     </div>
+    <AttendeeTableTotal :attendees="attendees" />
   </div>
   <div class="rounded bg-gray-100 mb-3">
     <details ref="attendanceDetails" class="flex-auto">

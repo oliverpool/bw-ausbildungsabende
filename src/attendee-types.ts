@@ -4,4 +4,4 @@ export default {
   JG: 'Jugendgruppe',
   KB: 'Kein Bereitschaftdienst',
   '×': 'Nicht mehr dabei',
-}
+} as { [key: string]: string }

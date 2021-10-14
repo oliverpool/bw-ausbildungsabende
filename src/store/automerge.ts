@@ -142,17 +142,20 @@ class AttendanceStore {
     })
     return id
   }
-  get latestTrainings(): ComputedRef<(TrainingEntity & TableRow)[]> {
+  get allTrainings(): ComputedRef<(TrainingEntity & TableRow)[]> {
     return computed(
       () =>
         (this.$version.value as any) &&
-        this.$doc.trainings.rows.slice(0, 50).sort((a, b) => {
+        this.$doc.trainings.rows.slice(0).sort((a, b) => {
           if (a.date == b.date) {
             return 0
           }
           return a.date < b.date ? 1 : -1
         })
     )
+  }
+  get latestTrainings(): ComputedRef<(TrainingEntity & TableRow)[]> {
+    return computed(() => this.allTrainings.value.slice(0, 50))
   }
   getTraining(id: string): (TrainingEntity & TableRow) | undefined {
     return (this.$version.value as any) && this.$doc.trainings.byId(id)
