@@ -33,7 +33,6 @@ export default defineComponent({
   setup() {
     return {
       attendees: attendanceStore.getSortedAttendees((a) => a.type == '×'),
-      latestTrainings: attendanceStore.latestTrainings,
     }
   },
 })
