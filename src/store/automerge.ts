@@ -50,8 +50,10 @@ class AttendanceStore {
   private $saveErr: Ref<string | null> = ref(null)
   private $savedVersion = ref(0)
   private $savedSize = ref(0)
+  private $idbName: string
 
-  constructor() {
+  constructor(idbName: string) {
+    this.$idbName = idbName
     this.$doc = automergeLoad<Attendance>(emptyDoc as BinaryDocument)
     // this.$doc = automergeChange(automergeInit<Attendance>(), (doc) => {
     //   doc.trainings = new Table()
@@ -60,7 +62,7 @@ class AttendanceStore {
     // })
     // console.log(this.export().toString())
 
-    idbGet('automerge')
+    idbGet(this.$idbName)
       .then((data) => {
         if (!data) {
           return
@@ -87,7 +89,7 @@ class AttendanceStore {
       this.$saveErr.value = null
       let version = this.$version.value
       let data = this.export()
-      await idbUpdate('automerge', (old?: Uint8Array) => {
+      await idbUpdate(this.$idbName, (old?: Uint8Array) => {
         if (!old || !old.byteLength || !this.$savedSize.value) {
           return data
         }
@@ -253,4 +255,5 @@ class AttendanceStore {
   }
 }
 
-export const attendanceStore = new AttendanceStore()
+const urlParams = new URLSearchParams(window.location.search)
+export const attendanceStore = new AttendanceStore(urlParams.get('store') || 'automerge')
