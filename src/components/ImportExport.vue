@@ -90,7 +90,6 @@ export default defineComponent({
           return
         }
         attendanceStore.clean()
-        closeDetails()
       },
     }
   },

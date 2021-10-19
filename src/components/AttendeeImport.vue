@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <label class="block pb-4">
-      <small>Vorname, Nachname, Status (AW/AEK/JG/KB)</small>
+      <small>Nachname, Vorname, Status (AW/AEK/JG/KB)</small>
       <textarea required class="block w-full" rows="10" v-model.trim="values.csv" />
     </label>
     <div class="pb-3">
@@ -63,8 +63,8 @@ export default defineComponent({
       csv: '',
       lineSeparator: '\n',
       cellSeparator: ',',
-      indexFirstname: 0,
-      indexLastname: 1,
+      indexFirstname: 1,
+      indexLastname: 0,
       indexType: 2,
     })
     const lines = computed(() => {
