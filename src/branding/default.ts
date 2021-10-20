@@ -35,6 +35,7 @@ export default {
       theme_color: '#0088ce',
       background_color: '#0088ce',
       lang: 'de',
+      start_url: '', // to preserve URL-query
       icons: [
         {
           src: 'pwa-192x192.png',
