@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       colors: {
         'blue-bw': '#0088ce',
+        'blue-dpsg': '#1A305B',
       },
       minWidth: (theme) => ({
         8: theme('width.8'),

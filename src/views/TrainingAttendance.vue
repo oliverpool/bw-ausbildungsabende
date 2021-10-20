@@ -13,7 +13,7 @@
           <label
             class="pl-2 text-gray-700 inline-flex items-center cursor-pointer min-w-16"
             :class="{
-              'text-blue-700': (presentTypes[attendee.id] || attendee.type) === 'AEK',
+              'text-blue-700': ['AEK', 'M'].includes(presentTypes[attendee.id] || attendee.type),
             }"
           >
             <AttendeeTrainingCheckbox

@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <label class="block pb-4">
-      <small>Nachname, Vorname, Status (AW/AEK/JG/KB)</small>
+      <small>Nachname, Vorname, Status ({{ Object.keys(branding.types).join('/') }})</small>
       <textarea required class="block w-full" rows="10" v-model.trim="values.csv" />
     </label>
     <div class="pb-3">
@@ -45,7 +45,7 @@
           'bg-gray-200': !importable,
         }"
       >
-        Einsatzkräfte importieren
+        {{ branding.import_member_list }}
       </button>
     </div>
   </form>
@@ -53,8 +53,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { attendanceStore, AttendeeEntity } from '@/store/automerge'
-import { TableRow, uuid } from 'automerge'
-import types from '@/attendee-types'
+import { TableRow } from 'automerge'
 
 export default defineComponent({
   emits: ['imported'],
@@ -119,7 +118,6 @@ export default defineComponent({
     )
 
     return {
-      types,
       values,
       lines,
       partitionedLines,

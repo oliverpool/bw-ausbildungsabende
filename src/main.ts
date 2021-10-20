@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import './index.css'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
+import branding from '@branding'
+
 useRegisterSW({
   onRegistered(r) {
     r &&
@@ -12,4 +14,11 @@ useRegisterSW({
   },
 })
 
-createApp(App).use(router).mount('#app')
+createApp(App)
+  .use(router)
+  .mixin({
+    data() {
+      return { branding }
+    },
+  })
+  .mount('#app')

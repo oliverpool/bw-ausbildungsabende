@@ -44,6 +44,8 @@ const emptyDoc: Uint8Array = new Uint8Array([
   3, 3, 6, 3, 0, 3, 0,
 ])
 
+import branding from '@branding'
+
 class AttendanceStore {
   private $doc: FreezeObject<Attendance>
   private $version = ref(1)
@@ -136,6 +138,37 @@ class AttendanceStore {
       this.$doc = automergeMerge(this.$doc, imported)
     }
     this.$version.value++
+
+    // fix main types
+    this.$doc = automergeChange(this.$doc, (doc) => {
+      const updatedType = function (type: string) {
+        if (branding.types['AEK'] && type == 'M') {
+          return 'AEK'
+        }
+        if (branding.types['AW'] && type == 'S') {
+          return 'AW'
+        }
+        if (branding.types['M'] && type == 'AEK') {
+          return 'M'
+        }
+        if (branding.types['S'] && type == 'AW') {
+          return 'S'
+        }
+        return type
+      }
+      doc.attendees.rows.forEach((a) => {
+        if (branding.types[a.type]) {
+          return
+        }
+        a.type = updatedType(a.type)
+      })
+      doc.attendee_trainings.rows.forEach((at) => {
+        if (branding.types[at.type]) {
+          return
+        }
+        at.type = updatedType(at.type)
+      })
+    })
     this.saveNow()
   }
   createTraining(training: TrainingEntity): string {

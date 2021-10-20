@@ -74,7 +74,7 @@ import { ComputedRef, defineComponent, ref } from 'vue'
 import { attendanceStore, AttendeeEntity } from '@/store/automerge'
 import AttendeeEditable from '@/components/AttendeeEditable.vue'
 
-import types from '@/attendee-types'
+import branding from '@branding'
 import { TableRow } from 'automerge'
 
 export default defineComponent({
@@ -83,6 +83,8 @@ export default defineComponent({
   },
   setup() {
     const attendeesByType: { [key: string]: ComputedRef<(AttendeeEntity & TableRow)[]> } = {}
+    const types = branding.types
+
     for (const t of Object.keys(types)) {
       attendeesByType[t] = attendanceStore.getSortedAttendees((a) => a.type == t)
     }

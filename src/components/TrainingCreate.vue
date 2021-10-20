@@ -8,7 +8,7 @@
         type="text"
         v-model.trim="values.topic"
         required
-        :placeholder="isExpanded ? '' : 'Neuer Ausbildungsabend'"
+        :placeholder="isExpanded ? '' : branding.new_training"
         @focus="hasFocus = 1"
         @blur="blurred"
       />
@@ -29,7 +29,7 @@
         type="submit"
         class="mt-4 bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-full"
       >
-        Ausbildungsabend erstellen →
+        {{ branding.create_training }} →
       </button>
     </div>
   </form>

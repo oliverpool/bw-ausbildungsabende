@@ -37,9 +37,9 @@
       <input class="block w-64" type="text" v-model.trim="form.lastname" required />
     </label>
     <label>
-      <small class="text-gray-700">Ausbildung</small>
+      <small class="text-gray-700">{{ branding.type }}</small>
       <select class="block w-64" v-model="form.type">
-        <option v-for="(type, short) in types" :key="short" :value="short">
+        <option v-for="(type, short) in branding.types" :key="short" :value="short">
           {{ short }} - {{ type }}
         </option>
       </select>
@@ -63,7 +63,6 @@ import { defineComponent, reactive } from 'vue'
 
 import { attendanceStore, AttendeeEntity } from '@/store/automerge'
 import { TableRow } from 'automerge'
-import types from '@/attendee-types'
 
 export default defineComponent({
   props: {
@@ -84,7 +83,6 @@ export default defineComponent({
       isOpen: false,
     })
     return {
-      types,
       form,
       submit() {
         attendanceStore.updateAttendee(props.attendee.id, form)

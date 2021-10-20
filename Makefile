@@ -7,6 +7,10 @@ install:
 dev: node_modules
 	yarn dev
 
+dev-dpsg: node_modules
+	BRANDING=dpsg yarn dev
+
+
 upgrade:
 	yarn upgrade
 

@@ -33,6 +33,7 @@
 import { defineComponent, Ref, ref } from 'vue'
 
 import { attendanceStore } from '@/store/automerge'
+import branding from '@branding'
 
 // adapted from https://stackoverflow.com/a/34156339/3207406
 function downloadFile(content: Uint8Array, fileName: string, contentType: string) {
@@ -61,7 +62,7 @@ export default defineComponent({
       saveBackup() {
         const txt = attendanceStore.export()
         const filename =
-          'Ausbildungsabende-' + new Date().toISOString().substr(0, 10) + '.automerge'
+          branding.exportFilename + '-' + new Date().toISOString().substr(0, 10) + '.automerge'
         downloadFile(txt, filename, 'application/octet-stream')
       },
       promptImport(e: Event) {
