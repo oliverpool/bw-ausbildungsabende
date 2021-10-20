@@ -4,7 +4,6 @@ import Training from './views/Training.vue'
 import TrainingShow from './views/TrainingOverview.vue'
 import TrainingAttendance from './views/TrainingAttendance.vue'
 
-import FormerAttendees from './views/FormerAttendees.vue'
 import AttendeesAttendance from './views/AttendeesAttendance.vue'
 
 const routes: RouteRecordRaw[] = [
@@ -28,7 +27,6 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  { path: '/ehemalige', component: FormerAttendees },
   { path: '/anwesenheit', component: AttendeesAttendance },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]

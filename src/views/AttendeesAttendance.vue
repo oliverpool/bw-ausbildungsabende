@@ -55,21 +55,46 @@
             </td>
           </tr>
         </template>
+        <template v-if="!attendeesByType['×'].value.length"></template>
+        <template v-else-if="!showFormer">
+          <tr>
+            <td class="p-3 pb-0 text-xl" :colspan="allTrainings.length + 1">
+              {{ attendeesByType['×'].value.length }} {{ '×' }}
+              <small class="text-gray-700">{{ branding.types['×'] }}</small>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="px-3 py-1 bg-gray-50 text-gray-600 cursor-pointer"
+              :colspan="allTrainings.length + 1"
+              @click="showFormer = true"
+            >
+              ▶&nbsp;&nbsp;Anzeigen
+            </td>
+          </tr>
+        </template>
+        <template v-else>
+          <tr>
+            <td
+              class="px-3 py-1 bg-gray-50 text-gray-600 cursor-pointer"
+              :colspan="allTrainings.length + 1"
+              @click="showFormer = false"
+            >
+              ▲&nbsp;&nbsp;Verbergen
+            </td>
+          </tr>
+        </template>
       </tbody>
     </table>
   </div>
 
   <div class="py-4">
     <router-link to="/" class="text-blue-600 py-4 pr-2 hover:underline">← Zurück</router-link>
-    &middot;
-    <router-link to="/ehemalige" class="text-blue-600 py-4 pl-2 hover:underline"
-      >Ehemalige Einsatzkräfte</router-link
-    >
   </div>
 </template>
 
 <script lang="ts">
-import { ComputedRef, defineComponent, ref } from 'vue'
+import { computed, ComputedRef, defineComponent, ref } from 'vue'
 
 import { attendanceStore, AttendeeEntity } from '@/store/automerge'
 import AttendeeEditable from '@/components/AttendeeEditable.vue'
@@ -89,10 +114,17 @@ export default defineComponent({
       attendeesByType[t] = attendanceStore.getSortedAttendees((a) => a.type == t)
     }
 
-    const activeTypes = { ...types }
-    delete activeTypes['×']
+    const showFormer = ref(false)
+    const activeTypes = computed(() => {
+      const t = { ...types }
+      if (!showFormer.value) {
+        delete t['×']
+      }
+      return t
+    })
 
     return {
+      showFormer,
       types: activeTypes,
       attendeesByType,
       allTrainings: attendanceStore.allTrainings,
