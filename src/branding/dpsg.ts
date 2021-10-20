@@ -12,12 +12,13 @@ branding.vue = {
   types: {
     S: 'Schnupper',
     M: 'Mitglied',
+    L: 'Leiter',
     '×': 'Nicht mehr dabei',
   } as { [key: string]: string },
-  new_member: 'Neuer Gruppling',
+  new_member: 'Neuer Grüppling',
   type: 'Mitgliedschaft',
   attends_training: 'Anwesend an dieser Gruppenstunde',
-  save_member: 'Gruppling speichern',
+  save_member: 'Grüppling speichern',
   exportFilename: 'Gruppenstunden',
 }
 branding.html = {

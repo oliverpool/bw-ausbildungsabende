@@ -19,11 +19,17 @@ host=pfadfrwqhf-user@ssh.cluster026.hosting.ovh.net
 build:
 	yarn run build
 
+build-dpsg:
+	BRANDING=dpsg yarn run build
+
 tsc:
 	yarn run tsc
 
 staging: build
-	rsync -avh dist/ $(host):subdomain/bw/ausbildung --delete-after
+	rsync -avh --chmod=ugo=rwX dist/ $(host):subdomain/bw/ausbildung --delete-after
+
+staging-dpsg: build-dpsg
+	rsync -avh --chmod=ugo=rwX dist/ $(host):subdomain/dpsg/grustu --delete-after
 
 tagnow:
 	@git diff-index --quiet HEAD || (echo "git tree is not clean:" && git status --short && exit 1)

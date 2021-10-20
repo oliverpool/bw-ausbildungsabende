@@ -5,8 +5,10 @@ import pkg from './package.json'
 import { VitePWA } from 'vite-plugin-pwa'
 
 let branding = require('./src/branding/default').default
+let publicDir = 'public'
 if (process.env.BRANDING === 'dpsg') {
   branding = require('./src/branding/dpsg').default
+  publicDir = 'public-dpsg'
   console.log('DPSG branding', branding.html)
 }
 
@@ -45,6 +47,7 @@ export default defineConfig({
     _APP_VERSION: JSON.stringify(pkg.version),
   },
   base: '/',
+  publicDir,
   build: {
     cssCodeSplit: false,
   },

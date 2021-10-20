@@ -76,6 +76,9 @@ export default defineComponent({
     } as { [key: string]: string }
     if (brandingBackground[stufe]) {
       document.documentElement.style.backgroundColor = brandingBackground[stufe]
+      document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute('content', brandingBackground[stufe])
     }
 
     return {
