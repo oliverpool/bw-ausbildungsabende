@@ -66,6 +66,18 @@ export default defineComponent({
       updateServiceWorker()
     })
 
+    const urlParams = new URLSearchParams(window.location.search)
+    const stufe = urlParams.get('stufe') || 'automerge'
+    const brandingBackground = {
+      woelflinge: '#f56403',
+      jungpfadfinder: '#2f53a7',
+      pfadfinder: '#26823c',
+      rover: '#ce2630',
+    } as { [key: string]: string }
+    if (brandingBackground[stufe]) {
+      document.documentElement.style.backgroundColor = brandingBackground[stufe]
+    }
+
     return {
       isUpdating,
 

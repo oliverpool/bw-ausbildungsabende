@@ -289,4 +289,4 @@ class AttendanceStore {
 }
 
 const urlParams = new URLSearchParams(window.location.search)
-export const attendanceStore = new AttendanceStore(urlParams.get('store') || 'automerge')
+export const attendanceStore = new AttendanceStore(urlParams.get('stufe') || 'automerge')
