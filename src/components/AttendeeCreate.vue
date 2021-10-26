@@ -8,7 +8,7 @@
         type="text"
         v-model.trim="values.firstname"
         required
-        :placeholder="isExpanded ? '' : branding.new_member"
+        :placeholder="isExpanded ? '' : $branding.new_member"
         @focus="hasFocus = 1"
         @blur="blurred"
       />
@@ -19,16 +19,16 @@
         <input class="block w-64" type="text" v-model.trim="values.lastname" required />
       </label>
       <label>
-        <small class="text-gray-700">{{ branding.type }}</small>
+        <small class="text-gray-700">{{ $branding.type }}</small>
         <select class="block w-64" v-model="values.type">
-          <option v-for="(type, short) in branding.types" :key="short" :value="short">
+          <option v-for="(type, short) in $branding.types" :key="short" :value="short">
             {{ short }} - {{ type }}
           </option>
         </select>
       </label>
       <label v-show="trainingId" class="flex items-center">
         <input type="checkbox" v-model="values.present" />
-        <span class="text-gray-700 p-2">{{ branding.attends_training }}</span>
+        <span class="text-gray-700 p-2">{{ $branding.attends_training }}</span>
       </label>
       <div v-if="isDuplicated" class="pb-3 font-bold text-red-600">
         Diese Einsatzkraft wurde schon eingetragen!
@@ -38,7 +38,7 @@
           type="submit"
           class="mt-4 bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-full"
         >
-          {{ branding.save_member }}
+          {{ $branding.save_member }}
         </button>
       </div>
     </div>

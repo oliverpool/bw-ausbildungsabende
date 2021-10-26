@@ -60,7 +60,7 @@
           <tr>
             <td class="p-3 pb-0 text-xl" :colspan="allTrainings.length + 1">
               {{ attendeesByType['×'].value.length }} {{ '×' }}
-              <small class="text-gray-700">{{ branding.types['×'] }}</small>
+              <small class="text-gray-700">{{ $branding.types['×'] }}</small>
             </td>
           </tr>
           <tr>

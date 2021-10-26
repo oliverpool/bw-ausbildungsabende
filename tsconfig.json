@@ -10,7 +10,8 @@
     "types": ["vite/client", "vite-plugin-pwa/client"],
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@branding": ["./src/branding/tsc.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],

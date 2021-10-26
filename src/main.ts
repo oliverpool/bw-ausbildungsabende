@@ -14,11 +14,14 @@ useRegisterSW({
   },
 })
 
-createApp(App)
-  .use(router)
-  .mixin({
-    data() {
-      return { branding }
-    },
-  })
-  .mount('#app')
+const app = createApp(App).use(router)
+
+app.config.globalProperties.$branding = branding
+
+app.mount('#app')
+
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $branding: typeof branding
+  }
+}

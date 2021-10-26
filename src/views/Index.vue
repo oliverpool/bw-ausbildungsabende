@@ -1,7 +1,7 @@
 <template>
   <TrainingCreate class="rounded bg-gray-100 mb-3" />
   <div class="rounded bg-gray-100 p-3 mb-3" v-if="latestTrainings.length > 0">
-    <h3 class="text-sm text-gray-700">{{ branding.last_trainings }}</h3>
+    <h3 class="text-sm text-gray-700">{{ $branding.last_trainings }}</h3>
     <ul>
       <li v-for="training in latestTrainings" :key="training.id">
         <router-link
@@ -24,7 +24,7 @@
   </div>
   <div class="rounded bg-gray-100 mb-3 flex justify-between">
     <div class="p-3">
-      <h3 class="text-sm text-gray-700">{{ branding.members }}</h3>
+      <h3 class="text-sm text-gray-700">{{ $branding.members }}</h3>
       <router-link to="/anwesenheit" class="text-blue-600 py-2 block hover:underline">
         Zum Übersicht
       </router-link>
@@ -34,7 +34,7 @@
   <div class="rounded bg-gray-100 mb-3">
     <details ref="attendanceDetails" class="flex-auto">
       <summary class="text-sm text-gray-700 p-3">
-        <span class="inline-block mr-4">{{ branding.import_member_list }}</span>
+        <span class="inline-block mr-4">{{ $branding.import_member_list }}</span>
       </summary>
       <div class="px-3">
         <AttendeeImport @imported="foldAttendanceDetails" />

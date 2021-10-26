@@ -1,6 +1,6 @@
 <template>
   <router-link to="/" class="block p-3 pb-0 text-center font-bold sm:text-xl">{{
-    branding.title
+    $branding.title
   }}</router-link>
   <div class="bg-bergkette h-12 bg-center -mt-px" />
   <div class="justify-center flex-1 bg-white text-black pl-safe-area-inset pr-safe-area-inset">

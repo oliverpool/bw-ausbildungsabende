@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <label class="block pb-4">
-      <small>Nachname, Vorname, Status ({{ Object.keys(branding.types).join('/') }})</small>
+      <small>Nachname, Vorname, Status ({{ Object.keys($branding.types).join('/') }})</small>
       <textarea required class="block w-full" rows="10" v-model.trim="values.csv" />
     </label>
     <div class="pb-3">
@@ -45,7 +45,7 @@
           'bg-gray-200': !importable,
         }"
       >
-        {{ branding.import_member_list }}
+        {{ $branding.import_member_list }}
       </button>
     </div>
   </form>
